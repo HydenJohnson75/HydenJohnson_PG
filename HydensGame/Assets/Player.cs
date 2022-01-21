@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    //Player Script
     private int player_Hp = 100;
     internal enum player_States { moving, idle, takingDmg, healing, dead };
     internal player_States my_State = player_States.idle;
