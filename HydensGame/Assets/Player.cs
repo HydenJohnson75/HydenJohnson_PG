@@ -12,8 +12,8 @@ public class Player : MonoBehaviour
     private float current_Speed;
     private float walking_Speed = 2f;
     private float running_Speed = 6f;
-    private float turn_Speed = 90f;
-    private float mouse_Sensitivity_X = 180f;
+    private float mouse_Sensitivity_X = 90f;
+    private float jump_Power = 6f;
     Animator player_Animation;
 
     // Start is called before the first frame update
@@ -41,17 +41,21 @@ public class Player : MonoBehaviour
         }
 
 
-        if (should_Turn_Left())
-        {
-            turn_Left();
-        }
-
         turn(Input.GetAxis("Horizontal"));
         //lookAround(Input.GetAxis("Vertical"));
 
         if (isRunning())
         {
-            run(current_Speed);
+            current_Speed  = run(current_Speed);
+        }
+        else
+        {
+            current_Speed = walking_Speed; 
+        }
+
+        if (jumped())
+        {
+            jump();
         }
 
     }
@@ -61,9 +65,13 @@ public class Player : MonoBehaviour
         return Input.GetKey(KeyCode.LeftShift);
     }
 
-    private void run(float current_Speed)
+    private float run(float current_Speed)
     {
         current_Speed = running_Speed;
+        player_Animation.SetBool("running", true);
+        player_Animation.SetBool("walking_Forward", false);
+        return running_Speed;
+        
     }
 
     private void lookAround(float mouse_Look_Value_Y)
@@ -74,16 +82,6 @@ public class Player : MonoBehaviour
     private void turn(float mouse_Turn_Value_X)
     {
         transform.Rotate(Vector3.up, mouse_Sensitivity_X * mouse_Turn_Value_X * Time.deltaTime);
-    }
-
-    private bool should_Turn_Left()
-    {
-        return Input.GetKey(KeyCode.A);
-    }
-
-    private void turn_Left()
-    {
-        transform.Rotate(Vector3.up, -turn_Speed * Time.deltaTime);
     }
 
     private void move_Backward()
@@ -101,10 +99,21 @@ public class Player : MonoBehaviour
         // move in frame rate independance using s = u*t
         transform.position += current_Speed * transform.forward * Time.deltaTime;
         player_Animation.SetBool("walking_Forward", true);
+        player_Animation.SetBool("running", false);
     }
 
     private bool should_Move_Forward()
     {
         return Input.GetKey(KeyCode.W);
+    }
+    
+    private bool jumped()
+    {
+        return Input.GetKey(KeyCode.Space);
+    }
+
+    private void jump()
+    {
+        transform.position += jump_Power * transform.up * Time.deltaTime;
     }
 }
