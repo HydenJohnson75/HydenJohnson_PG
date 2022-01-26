@@ -12,11 +12,18 @@ public class Manager : MonoBehaviour
     {
        main_Fps_Camera = main_Player_Template.GetComponentInChildren<Camera>();
 
-        if(main_Player_Template.GetComponentsInChildren<Camera>() != null)
-        {
-            print("I found my camera");
+       if(main_Player_Template.GetComponentsInChildren<Camera>() != null)
+       {
+           print("I found my camera");
 
-        }
+       }
+
+       for (int i = 0; i<100; i++)
+       {
+            GameObject g = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+            g.transform.position = new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 50f), Random.Range(-50f, 50f));
+       }
     }
 
     // Update is called once per frame
