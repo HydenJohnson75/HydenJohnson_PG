@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     Camera player_Camera;
     GameObject main_Cam;
 
+    FPS_Camera my_Camera;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +27,8 @@ public class Player : MonoBehaviour
         player_Animation = GetComponentInParent<Animator>();
         player_Camera = GetComponentInChildren<Camera>();
         main_Cam = player_Camera.gameObject;
+        my_Camera = GetComponentInChildren<FPS_Camera>();
+        my_Camera.you_Belong_To_Me(this);
     }
 
     // Update is called once per frame
@@ -32,6 +36,7 @@ public class Player : MonoBehaviour
     {
         player_Animation.SetBool("walking_Forward", false);
         player_Animation.SetBool("running", false);
+        player_Animation.SetBool("jumping", false);
 
         if (should_Move_Forward())
         {
@@ -44,9 +49,19 @@ public class Player : MonoBehaviour
             move_Backward();
         }
 
+        if (should_Strafe_Left())
+        {
+            strafe_Left();
+        }
+
+        if (should_Strafe_Right())
+        {
+            strafe_Right();
+        }
+
 
         turn(Input.GetAxis("Horizontal"));
-        //lookAround(Input.GetAxis("Vertical"));
+        adjust_Camera(Input.GetAxis("Vertical"));
 
         if (isRunning())
         {
@@ -62,14 +77,14 @@ public class Player : MonoBehaviour
             jump();
         }
 
-        if (is_Crouching())
-        {
-            crouch();
-        }
-        if(main_Cam.transform.position.y <= 0.72)
-        {
-            main_Cam.transform.position = new Vector3(transform.position.x, (0.92f * Time.deltaTime), transform.position.z);
-        }
+        //if (is_Crouching())
+        //{
+        //    crouch();
+        //}
+        //if(main_Cam.transform.position.y <= 0.72)
+        //{
+        //    main_Cam.transform.position = new Vector3(transform.position.x, (0.92f * Time.deltaTime), transform.position.z);
+        //}
     }
 
     private bool isRunning()
@@ -82,13 +97,14 @@ public class Player : MonoBehaviour
         current_Speed = running_Speed;
         player_Animation.SetBool("running", true);
         player_Animation.SetBool("walking_Forward", false);
+        player_Animation.SetBool("jumping", false);
         return running_Speed;
         
     }
 
-    private void lookAround(float mouse_Look_Value_Y)
+    private void adjust_Camera(float vertical_Adjustment)
     {
-        transform.Rotate(Vector3.right, mouse_Sensitivity_X * mouse_Look_Value_Y * Time.deltaTime);
+        my_Camera.adjust_Vertical_Angle(vertical_Adjustment);  
     }
 
     private void turn(float mouse_Turn_Value_X)
@@ -106,12 +122,33 @@ public class Player : MonoBehaviour
         return Input.GetKey(KeyCode.S);
     }
 
+    private void strafe_Left()
+    {
+        transform.position -= current_Speed * transform.right * Time.deltaTime;
+    }
+
+    private bool should_Strafe_Left()
+    {
+        return Input.GetKey(KeyCode.A);
+    }
+
+    private void strafe_Right()
+    {
+        transform.position += current_Speed * transform.right * Time.deltaTime;
+    }
+
+    private bool should_Strafe_Right()
+    {
+        return Input.GetKey(KeyCode.D);
+    }
+
     private void move_Forward()
     {
         // move in frame rate independance using s = u*t
         transform.position += current_Speed * transform.forward * Time.deltaTime;
         player_Animation.SetBool("walking_Forward", true);
         player_Animation.SetBool("running", false);
+        player_Animation.SetBool("jumping", false);
     }
 
     private bool should_Move_Forward()
@@ -127,6 +164,9 @@ public class Player : MonoBehaviour
     private void jump()
     {
         transform.position += jump_Power * transform.up * Time.deltaTime;
+        player_Animation.SetBool("walking_Forward", false);
+        player_Animation.SetBool("running", false);
+        player_Animation.SetBool("jumping", true);
     }
 
     private bool is_Crouching()
