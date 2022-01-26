@@ -15,12 +15,16 @@ public class Player : MonoBehaviour
     private float mouse_Sensitivity_X = 90f;
     private float jump_Power = 6f;
     Animator player_Animation;
+    Camera player_Camera;
+    GameObject main_Cam;
 
     // Start is called before the first frame update
     void Start()
     {
         current_Speed = walking_Speed;
         player_Animation = GetComponentInParent<Animator>();
+        player_Camera = GetComponentInChildren<Camera>();
+        main_Cam = player_Camera.gameObject;
     }
 
     // Update is called once per frame
@@ -58,6 +62,14 @@ public class Player : MonoBehaviour
             jump();
         }
 
+        if (is_Crouching())
+        {
+            crouch();
+        }
+        if(main_Cam.transform.position.y <= 0.72)
+        {
+            main_Cam.transform.position = new Vector3(transform.position.x, (0.92f * Time.deltaTime), transform.position.z);
+        }
     }
 
     private bool isRunning()
@@ -115,5 +127,15 @@ public class Player : MonoBehaviour
     private void jump()
     {
         transform.position += jump_Power * transform.up * Time.deltaTime;
+    }
+
+    private bool is_Crouching()
+    {
+        return Input.GetKey(KeyCode.C);
+    }
+
+    private void crouch()
+    {
+        main_Cam.transform.position = new Vector3(transform.position.x, (0.7f * Time.deltaTime) ,transform.position.z);
     }
 }
