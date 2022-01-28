@@ -9,9 +9,10 @@ public class FPS_Camera : MonoBehaviour
     float distance = 0f;
     Transform owning_Character_Transform;
     private Player owning_Character;
-    private float vertical_Sensitivity = 0.05f;
     private float focal_Height = 2f;
     private Transform focal_Point;
+    private float vertical_Sensitivity = 0.05f;
+    private Vector3 desired_camera_position;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +32,8 @@ public class FPS_Camera : MonoBehaviour
         angle += vertical_Adjustment * vertical_Sensitivity;
         angle = Mathf.Clamp(angle, -1, 0);
         print(vertical_Adjustment);
+
+        desired_camera_position = new Vector3(0, distance * Mathf.Cos(angle), distance * Mathf.Sin(angle));
     }
 
     internal void you_Belong_To_Me(Player player)
