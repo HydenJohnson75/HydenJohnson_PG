@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Open_Door : MonoBehaviour
 {
+    
+    Vector3 target = new Vector3(0.001f, -2.7f,-0.001f);
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,4 +18,18 @@ public class Open_Door : MonoBehaviour
     {
         
     }
+
+    public void open_Door()
+    {
+        Vector3 current_Position = new Vector3(this.transform.localPosition.x,this.transform.localPosition.y,this.transform.localPosition.z);
+
+
+        if(transform.localPosition != target)
+        {
+            transform.localPosition -= transform.up * Time.deltaTime;
+        }
+        
+    }
+
+
 }

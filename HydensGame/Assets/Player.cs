@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
     private float walking_Speed = 2f;
     private float running_Speed = 6f;
     private float mouse_Sensitivity_X = 90f;
-    private float jump_Power = 6f;
     Animator player_Animation;
     Camera player_Camera;
     GameObject main_Cam;
@@ -21,6 +20,8 @@ public class Player : MonoBehaviour
     FPS_Camera my_Camera;
     SphereCollider panel_Collider;
     Transform door_Position;
+    Transform ground_Level;
+    private bool is_Grounded = true;
 
     // Start is called before the first frame update
     void Start()
@@ -76,10 +77,21 @@ public class Player : MonoBehaviour
             current_Speed = walking_Speed; 
         }
 
-        if (jumped())
+        if (is_Grounded == true && jumped())
         {
             jump();
         }
+
+
+        if(transform.position.y < 1.2f)
+        {
+            is_Grounded = true;
+        }
+        else
+        {
+            is_Grounded = false;
+        }
+        
 
         //if (is_Crouching())
         //{
@@ -100,6 +112,7 @@ public class Player : MonoBehaviour
                 if (Interact_Script != null)
                 {
                     Interact_Script.Interact();
+                    
                 }
             }
 
@@ -178,15 +191,16 @@ public class Player : MonoBehaviour
     
     private bool jumped()
     {
-        return Input.GetKey(KeyCode.Space);
+        return Input.GetKeyDown(KeyCode.Space);
     }
 
     private void jump()
     {
-        transform.position += jump_Power * transform.up * Time.deltaTime;
+        GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.up) * 300);
         player_Animation.SetBool("walking_Forward", false);
         player_Animation.SetBool("running", false);
         player_Animation.SetBool("jumping", true);
+        is_Grounded = false;
     }
 
     private bool is_Crouching()

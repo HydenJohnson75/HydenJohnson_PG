@@ -123,6 +123,24 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &14925599 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8875449794350654444, guid: b581fdbd127292d44ab21c4b16d91d05,
+    type: 3}
+  m_PrefabInstance: {fileID: 1957222474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &14925601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14925599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25b841558a243b042b2d21ac59ec70ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &236023006
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,7 +604,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!65 &1046843737
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -694,7 +712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70d0f6480ac7e4c419897c74d0586401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  my_DoorGO: {fileID: 0}
+  my_DoorGO: {fileID: 14925599}
 --- !u!1 &1763791913
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,7 +766,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1763791913}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -940,7 +958,7 @@ PrefabInstance:
     - target: {fileID: 8875449794350432198, guid: b581fdbd127292d44ab21c4b16d91d05,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.337
+      value: 2.317
       objectReference: {fileID: 0}
     - target: {fileID: 8875449794350432198, guid: b581fdbd127292d44ab21c4b16d91d05,
         type: 3}
