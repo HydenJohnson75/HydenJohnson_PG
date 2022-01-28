@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     GameObject main_Cam;
 
     FPS_Camera my_Camera;
+    SphereCollider panel_Collider;
+    Transform door_Position;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +31,8 @@ public class Player : MonoBehaviour
         main_Cam = player_Camera.gameObject;
         my_Camera = GetComponentInChildren<FPS_Camera>();
         my_Camera.you_Belong_To_Me(this);
+        panel_Collider = FindObjectOfType<Terminal_Script>().GetComponent<SphereCollider>();
+
     }
 
     // Update is called once per frame
@@ -85,6 +89,22 @@ public class Player : MonoBehaviour
         //{
         //    main_Cam.transform.position = new Vector3(transform.position.x, (0.92f * Time.deltaTime), transform.position.z);
         //}
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position + 0.7f * Vector3.up + 0.5f * transform.forward, 0.5f);
+
+            foreach(Collider c in colliders)
+            {
+                I_Interactable Interact_Script = c.GetComponent<I_Interactable>();
+                if (Interact_Script != null)
+                {
+                    Interact_Script.Interact();
+                }
+            }
+
+        }
+
     }
 
     private bool isRunning()
@@ -177,5 +197,18 @@ public class Player : MonoBehaviour
     private void crouch()
     {
         main_Cam.transform.position = new Vector3(transform.position.x, (0.7f * Time.deltaTime) ,transform.position.z);
+    }
+
+    private void interact()
+    {
+        
+    }
+
+    private void OnTriggerEnter(Collider panel_Collider)
+    {
+        print("Event Is taking place");
+
+        
+        
     }
 }
