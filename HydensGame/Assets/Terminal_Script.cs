@@ -13,7 +13,6 @@ public class Terminal_Script : MonoBehaviour, I_Interactable
 
         print("Opening door");
 
-        my_Door.open_Door();
 
         //0.217
     }

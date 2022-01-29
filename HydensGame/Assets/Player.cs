@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     SphereCollider panel_Collider;
     Transform door_Position;
     Transform ground_Level;
+    focal_Point my_Focal_Point;
     private bool is_Grounded = true;
 
     // Start is called before the first frame update
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour
         player_Camera = GetComponentInChildren<Camera>();
         main_Cam = player_Camera.gameObject;
         my_Camera = GetComponentInChildren<FPS_Camera>();
+        my_Focal_Point = GetComponentInChildren<focal_Point>();
         my_Camera.you_Belong_To_Me(this);
         panel_Collider = FindObjectOfType<Terminal_Script>().GetComponent<SphereCollider>();
 
@@ -102,21 +104,23 @@ public class Player : MonoBehaviour
         //    main_Cam.transform.position = new Vector3(transform.position.x, (0.92f * Time.deltaTime), transform.position.z);
         //}
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Collider[] colliders = Physics.OverlapSphere(transform.position + 0.7f * Vector3.up + 0.5f * transform.forward, 0.5f);
+        
+         Collider[] colliders = Physics.OverlapSphere(transform.position + 0.7f * Vector3.up + 0.5f * transform.forward, 0.5f);
 
             foreach(Collider c in colliders)
             {
                 I_Interactable Interact_Script = c.GetComponent<I_Interactable>();
                 if (Interact_Script != null)
                 {
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
                     Interact_Script.Interact();
-                    
+                    }
+                      
                 }
+
             }
 
-        }
 
     }
 
@@ -137,7 +141,8 @@ public class Player : MonoBehaviour
 
     private void adjust_Camera(float vertical_Adjustment)
     {
-        my_Camera.adjust_Vertical_Angle(vertical_Adjustment);  
+        //my_Camera.adjust_Vertical_Angle(vertical_Adjustment);
+        my_Focal_Point.adjust_Vertical_Angle(vertical_Adjustment);
     }
 
     private void turn(float mouse_Turn_Value_X)
@@ -225,4 +230,5 @@ public class Player : MonoBehaviour
         
         
     }
+
 }

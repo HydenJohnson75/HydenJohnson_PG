@@ -21,14 +21,16 @@ public class Open_Door : MonoBehaviour
 
     public void open_Door()
     {
-        Vector3 current_Position = new Vector3(this.transform.localPosition.x,this.transform.localPosition.y,this.transform.localPosition.z);
-
-
-        if(transform.localPosition != target)
-        {
-            transform.localPosition -= transform.up * Time.deltaTime;
-        }
+     
+            
         
+    }
+
+    public void OnTriggerStay(Collider other)
+    {
+        Vector3 current_Position = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, this.transform.localPosition.z);
+
+        transform.localPosition -= transform.up * Time.deltaTime;
     }
 
 
