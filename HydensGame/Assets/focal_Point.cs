@@ -20,15 +20,17 @@ public class focal_Point : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.localPosition = Vector3.Lerp(transform.localPosition, desired_camera_position, 0.01f);
+
     }
 
     internal void adjust_Vertical_Angle(float vertical_Adjustment)
     {
         angle += vertical_Adjustment * vertical_Sensitivity;
-        angle = Mathf.Clamp(angle, -1, 0);
+        angle = Mathf.Clamp(angle, -3, 3);
         print(vertical_Adjustment);
 
         desired_camera_position = new Vector3(0, distance * Mathf.Cos(angle), distance * Mathf.Sin(angle));
+
     }
+
 }
