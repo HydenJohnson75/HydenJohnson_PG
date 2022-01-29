@@ -223,6 +223,7 @@ public class Player : MonoBehaviour
         
     }
 
+
     private void OnTriggerEnter(Collider panel_Collider)
     {
         print("Event Is taking place");
