@@ -21,17 +21,13 @@ public class Open_Door : MonoBehaviour
 
     public void open_Door()
     {
-     
-            
-        
-    }
 
-    public void OnTriggerStay(Collider other)
-    {
         Vector3 current_Position = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, this.transform.localPosition.z);
 
-        transform.localPosition -= transform.up * Time.deltaTime;
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, target, (1.0f * Time.deltaTime));
+
     }
+
 
 
 }

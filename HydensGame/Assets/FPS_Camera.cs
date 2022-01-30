@@ -31,7 +31,6 @@ public class FPS_Camera : MonoBehaviour
     {
         angle += vertical_Adjustment * vertical_Sensitivity;
         angle = Mathf.Clamp(angle, -3, 3);
-        print(vertical_Adjustment);
 
     }
 

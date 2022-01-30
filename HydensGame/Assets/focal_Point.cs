@@ -27,7 +27,6 @@ public class focal_Point : MonoBehaviour
     {
         angle += vertical_Adjustment * vertical_Sensitivity;
         angle = Mathf.Clamp(angle, -3, 3);
-        print(vertical_Adjustment);
 
         desired_camera_position = new Vector3(0, distance * Mathf.Cos(angle), distance * Mathf.Sin(angle));
 
