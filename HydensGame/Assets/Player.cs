@@ -16,11 +16,10 @@ public class Player : MonoBehaviour
     Animator player_Animation;
     Camera player_Camera;
     GameObject main_Cam;
+    Open_Door door;
 
     FPS_Camera my_Camera;
     SphereCollider panel_Collider;
-    Transform door_Position;
-    Transform ground_Level;
     focal_Point my_Focal_Point;
     private bool is_Grounded = true;
 
@@ -35,7 +34,7 @@ public class Player : MonoBehaviour
         my_Focal_Point = GetComponentInChildren<focal_Point>();
         my_Camera.you_Belong_To_Me(this);
         panel_Collider = FindObjectOfType<Terminal_Script>().GetComponent<SphereCollider>();
-
+        door = FindObjectOfType<Open_Door>();
     }
 
     // Update is called once per frame
@@ -72,11 +71,11 @@ public class Player : MonoBehaviour
 
         if (isRunning())
         {
-            current_Speed  = run(current_Speed);
+            current_Speed = run(current_Speed);
         }
         else
         {
-            current_Speed = walking_Speed; 
+            current_Speed = walking_Speed;
         }
 
         if (is_Grounded == true && jumped())
@@ -85,7 +84,7 @@ public class Player : MonoBehaviour
         }
 
 
-        if(transform.position.y < 1.2f)
+        if (transform.position.y < 1.2f)
         {
             is_Grounded = true;
         }
@@ -93,7 +92,7 @@ public class Player : MonoBehaviour
         {
             is_Grounded = false;
         }
-        
+
 
         //if (is_Crouching())
         //{
@@ -104,23 +103,27 @@ public class Player : MonoBehaviour
         //    main_Cam.transform.position = new Vector3(transform.position.x, (0.92f * Time.deltaTime), transform.position.z);
         //}
 
-        
-         Collider[] colliders = Physics.OverlapSphere(transform.position + 0.7f * Vector3.up + 0.5f * transform.forward, 0.5f);
+        if (Input.GetKey(KeyCode.E))
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position + 0.7f * Vector3.up + 0.5f * transform.forward, 0.5f);
+            
 
-            foreach(Collider c in colliders)
+            foreach (Collider c in colliders)
             {
                 I_Interactable Interact_Script = c.GetComponent<I_Interactable>();
-                if (Interact_Script != null)
+                if (Interact_Script != null )
                 {
-                    if (Input.GetKeyDown(KeyCode.E))
-                    {
                     Interact_Script.Interact();
-                    }
-                      
+
+                }
+                else
+                {
+                    print("event over");
                 }
 
             }
 
+        }
 
     }
 
@@ -218,10 +221,6 @@ public class Player : MonoBehaviour
         main_Cam.transform.position = new Vector3(transform.position.x, (0.7f * Time.deltaTime) ,transform.position.z);
     }
 
-    private void interact()
-    {
-        
-    }
 
 
     private void OnTriggerEnter(Collider panel_Collider)
