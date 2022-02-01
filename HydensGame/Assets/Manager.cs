@@ -6,6 +6,8 @@ public class Manager : MonoBehaviour
 {
     public GameObject main_Player_Template;
     private Camera main_Fps_Camera;
+    public GameObject cube_Test; 
+    Rigidbody cube_RB;
 
     // Start is called before the first frame update
     void Start()
@@ -25,11 +27,14 @@ public class Manager : MonoBehaviour
             g.transform.position = new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 50f), Random.Range(-50f, 50f));
        }
 
+        cube_RB = cube_Test.GetComponent<Rigidbody>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        cube_RB.velocity = Vector3.zero;
+        cube_RB.angularVelocity = Vector3.zero;
     }
 }

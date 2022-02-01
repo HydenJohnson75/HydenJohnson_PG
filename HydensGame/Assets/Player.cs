@@ -6,7 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     //Player Script
-    private int player_Hp = 100;
+    private int my_HP;
     internal enum player_States { moving, idle, takingDmg, healing, dead };
     internal player_States my_State = player_States.idle;
     private float current_Speed;
@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        my_HP = 100;
+        Cursor.lockState = CursorLockMode.Locked;
         current_Speed = walking_Speed;
         player_Animation = GetComponentInParent<Animator>();
         player_Camera = GetComponentInChildren<Camera>();
@@ -40,9 +42,15 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         player_Animation.SetBool("walking_Forward", false);
         player_Animation.SetBool("running", false);
         player_Animation.SetBool("jumping", false);
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            my_HP -= 10;
+        }
 
         if (should_Move_Forward())
         {
@@ -65,7 +73,7 @@ public class Player : MonoBehaviour
             strafe_Right();
         }
 
-
+ 
         turn(Input.GetAxis("Horizontal"));
         adjust_Camera(Input.GetAxis("Vertical"));
 
@@ -103,7 +111,7 @@ public class Player : MonoBehaviour
         //    main_Cam.transform.position = new Vector3(transform.position.x, (0.92f * Time.deltaTime), transform.position.z);
         //}
 
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position + 0.7f * Vector3.up + 0.5f * transform.forward, 0.5f);
             
@@ -229,6 +237,11 @@ public class Player : MonoBehaviour
 
         
         
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        print("Hello");
     }
 
 }
