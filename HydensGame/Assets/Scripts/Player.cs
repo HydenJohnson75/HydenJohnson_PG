@@ -245,4 +245,18 @@ public class Player : MonoBehaviour
         print("Hello");
     }
 
+    public bool Shoot()
+    {
+        bool is_Shooting;
+        if (Input.GetMouseButtonDown(0))
+        {
+            is_Shooting = true;
+        }
+        else
+        {
+            is_Shooting = false;
+        }
+
+        return is_Shooting;
+    }
 }
