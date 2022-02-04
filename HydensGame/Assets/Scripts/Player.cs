@@ -22,7 +22,8 @@ public class Player : MonoBehaviour
     SphereCollider panel_Collider;
     focal_Point my_Focal_Point;
     private bool is_Grounded = true;
-    Vector3 last_Position; 
+    Vector3 last_Position;
+    Gun_Script my_Gun;
 
     // Start is called before the first frame update
     void Start()
@@ -38,11 +39,13 @@ public class Player : MonoBehaviour
         my_Camera.you_Belong_To_Me(this);
         panel_Collider = FindObjectOfType<Terminal_Script>().GetComponent<SphereCollider>();
         door = FindObjectOfType<Open_Door>();
+        my_Gun = GetComponentInChildren<Gun_Script>();
     }
 
     // Update is called once per frame
     void Update()
     {
+
         last_Position = transform.position;
         player_Animation.SetBool("walking_Forward", false);
         player_Animation.SetBool("running", false);
@@ -87,20 +90,17 @@ public class Player : MonoBehaviour
             current_Speed = walking_Speed;
         }
 
-        if (is_Grounded == true && jumped())
-        {
-            jump();
-        }
+        
 
 
-        if (transform.position.y < 1.2f)
+        /*if (transform.position.y < 1.2f)
         {
             is_Grounded = true;
         }
         else
         {
             is_Grounded = false;
-        }
+        }*/
 
 
         //if (is_Crouching())
@@ -134,6 +134,29 @@ public class Player : MonoBehaviour
 
         }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            Shoot();
+        }
+
+        Collider[] wall_Clips = Physics.OverlapCapsule(transform.position - Vector3.up * 0.45f, transform.position + Vector3.up * 0.45f, 0.1f);
+
+        foreach(Collider wall in wall_Clips)
+        {
+            print(wall.transform.tag);
+
+            if(wall.transform.tag != "Floor")
+            {
+                transform.position = last_Position;
+            }
+            else
+            {
+                if (jumped())
+                {
+                    jump();
+                }
+            }
+        }
     }
 
     private bool isRunning()
@@ -217,7 +240,7 @@ public class Player : MonoBehaviour
         player_Animation.SetBool("walking_Forward", false);
         player_Animation.SetBool("running", false);
         player_Animation.SetBool("jumping", true);
-        is_Grounded = false;
+        //is_Grounded = false;
     }
 
     private bool is_Crouching()
@@ -243,20 +266,15 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         print("Hello");
+        
+        if(collision.transform.tag != "Floor")
+        {
+            transform.position = last_Position;
+        }
     }
 
-    public bool Shoot()
+    public void Shoot()
     {
-        bool is_Shooting;
-        if (Input.GetMouseButtonDown(0))
-        {
-            is_Shooting = true;
-        }
-        else
-        {
-            is_Shooting = false;
-        }
-
-        return is_Shooting;
+        my_Gun.Shoot();
     }
 }
