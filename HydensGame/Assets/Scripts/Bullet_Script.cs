@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet_Script : MonoBehaviour
 {
-    public float speed = 8f;
+    //public float speed = 8f;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +15,6 @@ public class Bullet_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.localPosition += transform.up * speed * Time.deltaTime;
+        //transform.localPosition += transform.up * speed * Time.deltaTime;
     }
 }
