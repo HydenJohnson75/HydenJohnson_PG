@@ -93,14 +93,14 @@ public class Player : MonoBehaviour
         
 
 
-        /*if (transform.position.y < 1.2f)
+        if (transform.position.y < 1.42f)
         {
             is_Grounded = true;
         }
         else
         {
             is_Grounded = false;
-        }*/
+        }
 
 
         //if (is_Crouching())
@@ -149,13 +149,12 @@ public class Player : MonoBehaviour
             {
                 transform.position = last_Position;
             }
-            else
-            {
-                if (jumped())
-                {
-                    jump();
-                }
-            }
+          
+        }
+
+        if (jumped() && is_Grounded == true)
+        {
+            jump();
         }
     }
 
@@ -240,7 +239,7 @@ public class Player : MonoBehaviour
         player_Animation.SetBool("walking_Forward", false);
         player_Animation.SetBool("running", false);
         player_Animation.SetBool("jumping", true);
-        //is_Grounded = false;
+        is_Grounded = false;
     }
 
     private bool is_Crouching()
