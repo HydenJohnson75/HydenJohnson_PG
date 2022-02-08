@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     Camera player_Camera;
     GameObject main_Cam;
     Open_Door door;
+    Renderer panel_Render;
+    Material panel_Mat;
 
     FPS_Camera my_Camera;
     SphereCollider panel_Collider;
@@ -40,6 +42,8 @@ public class Player : MonoBehaviour
         panel_Collider = FindObjectOfType<Terminal_Script>().GetComponent<SphereCollider>();
         door = FindObjectOfType<Open_Door>();
         my_Gun = GetComponentInChildren<Gun_Script>();
+        panel_Mat = panel_Collider.GetComponent<Renderer>().material;
+        panel_Mat.EnableKeyword("_EmissionColor");
     }
 
     // Update is called once per frame
@@ -152,6 +156,7 @@ public class Player : MonoBehaviour
           
         }
 
+
         if (jumped() && is_Grounded == true)
         {
             jump();
@@ -257,9 +262,6 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider panel_Collider)
     {
         print("Event Is taking place");
-
-        
-        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -269,6 +271,13 @@ public class Player : MonoBehaviour
         if(collision.transform.tag != "Floor")
         {
             transform.position = last_Position;
+        }
+
+        if(collision.transform.tag == "Buff")
+        {
+            print("You now have a buff");
+
+            panel_Mat.SetColor("_EmissionColor", Color.red);
         }
     }
 
