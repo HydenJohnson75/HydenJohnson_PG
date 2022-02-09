@@ -27,6 +27,7 @@ public class Rotate_Script : MonoBehaviour
             {
                 movement = false;
             }
+
         }
 
         if(movement == false)
