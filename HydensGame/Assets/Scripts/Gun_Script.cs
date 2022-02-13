@@ -6,6 +6,7 @@ using UnityEngine;
 public class Gun_Script : MonoBehaviour
 {
 
+    private Vector3 targetADS = new Vector3(0, -0.041f, 0.1623f);
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +35,12 @@ public class Gun_Script : MonoBehaviour
             }
         }
 
-        Debug.DrawRay(this.transform.position + (Vector3.up * 0.02f), Camera.main.transform.forward * 10f, Color.green);
+        Debug.DrawRay(this.transform.position + (Vector3.up * 0.1f), Camera.main.transform.forward * 10f, Color.green);
+    }
+
+
+    internal void ADS()
+    {
+        this.transform.position = Vector3.Lerp(this.transform.localPosition, targetADS, Time.deltaTime);
     }
 }

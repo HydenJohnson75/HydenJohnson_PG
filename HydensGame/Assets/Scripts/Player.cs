@@ -143,6 +143,11 @@ public class Player : MonoBehaviour
             Shoot();
         }
 
+        if (Input.GetMouseButton(1))
+        {
+            ADS();
+        }
+
         Collider[] wall_Clips = Physics.OverlapCapsule(transform.position - Vector3.up * 0.45f, transform.position + Vector3.up * 0.45f, 0.1f);
 
         foreach(Collider wall in wall_Clips)
@@ -284,5 +289,10 @@ public class Player : MonoBehaviour
     public void Shoot()
     {
         my_Gun.Shoot();
+    }
+
+    public void ADS()
+    {
+        my_Gun.ADS();
     }
 }
