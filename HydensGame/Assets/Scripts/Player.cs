@@ -143,10 +143,10 @@ public class Player : MonoBehaviour
             Shoot();
         }
 
-        if (Input.GetMouseButton(1))
+        /*if (Input.GetMouseButton(1))
         {
             ADS();
-        }
+        }*/
 
         Collider[] wall_Clips = Physics.OverlapCapsule(transform.position - Vector3.up * 0.45f, transform.position + Vector3.up * 0.45f, 0.1f);
 
