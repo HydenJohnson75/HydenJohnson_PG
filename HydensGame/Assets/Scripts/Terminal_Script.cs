@@ -5,7 +5,7 @@ using UnityEngine;
 public class Terminal_Script : MonoBehaviour, I_Interactable
 {
     public GameObject my_DoorGO;
-    private Open_Door my_Door;
+    private I_Actionable my_Door;
     
 
     public void Interact()
@@ -20,7 +20,7 @@ public class Terminal_Script : MonoBehaviour, I_Interactable
     // Start is called before the first frame update
     void Start()
     {
-        my_Door = my_DoorGO.GetComponent<Open_Door>();
+        my_Door = my_DoorGO.GetComponent<I_Actionable>();
     }
 
     // Update is called once per frame

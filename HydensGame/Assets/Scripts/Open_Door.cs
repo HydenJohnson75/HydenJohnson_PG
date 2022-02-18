@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Open_Door : MonoBehaviour, I_Shootable
+public class Open_Door : MonoBehaviour, I_Shootable, I_Actionable
 {
     enum door_state { Open, Closed, Opening, Closing}
 
