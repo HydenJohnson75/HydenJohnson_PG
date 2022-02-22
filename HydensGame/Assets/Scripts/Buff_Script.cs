@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rotate_Script : MonoBehaviour
+public class Buff_Script : MonoBehaviour
 {
     private float degree = 60f;
     private float speed = 0.3f;
