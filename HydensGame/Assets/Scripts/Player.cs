@@ -266,12 +266,12 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider panel_Collider)
     {
-        print("Event Is taking place");
+        //sprint("Event Is taking place");
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        print("Hello");
+        /*print("Hello");
         
         if(collision.transform.tag != "Floor")
         {
@@ -283,7 +283,7 @@ public class Player : MonoBehaviour
             print("You now have a buff");
 
             panel_Mat.SetColor("_EmissionColor", Color.red);
-        }
+        }*/
     }
 
     public void Shoot()
