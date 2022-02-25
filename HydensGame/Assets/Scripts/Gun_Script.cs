@@ -35,7 +35,7 @@ public class Gun_Script : MonoBehaviour
             }
         }
 
-        Debug.DrawRay(this.transform.position + (Vector3.up * 0.1f), Camera.main.transform.forward * 10f, Color.green);
+        Debug.DrawRay(this.transform.position + (Vector3.up * 0.03f), Camera.main.transform.forward * 10f, Color.green);
     }
 
 

@@ -18,7 +18,7 @@ public class FPS_Camera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.localPosition = new Vector3(0, 1, 0);
+        transform.localPosition = new Vector3(-0.0059998245f, 0.693000019f, 0.331f);
         transform.LookAt(focal_Point);
     }
 
