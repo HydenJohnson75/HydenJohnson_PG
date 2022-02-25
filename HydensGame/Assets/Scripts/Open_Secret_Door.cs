@@ -40,7 +40,7 @@ public class Open_Secret_Door : MonoBehaviour
 
                 left_Door.localPosition += door_speed * Vector3.forward * Time.deltaTime;
 
-                if (right_Door.localPosition.z > 1.92f)
+                if (left_Door.localPosition.z > 1.92f)
                 {
                     currently = door_state.Open;
 
@@ -54,7 +54,11 @@ public class Open_Secret_Door : MonoBehaviour
 
     public void open_Door()
     {
-        currently = door_state.Opening;
+        if(currently != door_state.Open)
+        {
+            currently = door_state.Opening;
+        }
+        
     }
 }
 

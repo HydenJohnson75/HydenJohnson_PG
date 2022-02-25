@@ -54,6 +54,9 @@ public class Open_Double_Door : MonoBehaviour, I_Actionable
 
     public void open_Door()
     {
-        currently = door_state.Opening;
+        if(currently != door_state.Open)
+        {
+            currently = door_state.Opening;
+        }
     }
 }
