@@ -14,6 +14,8 @@ public class Manager : MonoBehaviour
     Renderer panel_Render;
     Material panel_Mat;
     GameObject colorChange;
+    
+    
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,10 @@ public class Manager : MonoBehaviour
         panel_Mat = panel_Render.GetComponent<Renderer>().material;
         panel_Mat.EnableKeyword("_EmissionColor");
 
+        
+
+        
+
     }
 
     // Update is called once per frame
@@ -34,9 +40,7 @@ public class Manager : MonoBehaviour
 
         if(cMM.currentNumberCheck() == 1234)
         {
-            print("you solved the puzzle");
-
-            my_SecretDoor.open_Door();     
+            my_SecretDoor.open_Door();
         }
 
         if (my_Player.gotBuff())

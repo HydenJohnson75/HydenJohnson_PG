@@ -17,12 +17,12 @@ public class Player : MonoBehaviour
     Camera player_Camera;
     GameObject main_Cam;
     FPS_Camera my_Camera;
-    //SphereCollider panel_Collider;
     focal_Point my_Focal_Point;
     private bool is_Grounded = true;
     Vector3 last_Position;
     Gun_Script my_Gun;
     bool hasBuff;
+
 
     // Start is called before the first frame update
     void Start()
@@ -36,12 +36,7 @@ public class Player : MonoBehaviour
         my_Camera = GetComponentInChildren<FPS_Camera>();
         my_Focal_Point = GetComponentInChildren<focal_Point>();
         my_Camera.you_Belong_To_Me(this);
-       // panel_Collider = FindObjectOfType<Terminal_Script>().GetComponent<SphereCollider>();
-
         my_Gun = GetComponentInChildren<Gun_Script>();
-        //panel_Mat = panel_Collider.GetComponent<Renderer>().material;
-        //panel_Mat.EnableKeyword("_EmissionColor");
-
         hasBuff = false;
     }
 
@@ -126,11 +121,10 @@ public class Player : MonoBehaviour
                 if (Interact_Script != null )
                 {
                     Interact_Script.Interact();
-
                 }
                 else
                 {
-                    print("event over");
+                    
                 }
 
             }
@@ -142,16 +136,19 @@ public class Player : MonoBehaviour
             Shoot();
         }
 
-        /*if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1))
         {
             ADS();
-        }*/
+        }
+        else
+        {
+            noADS();
+        }
 
         Collider[] wall_Clips = Physics.OverlapCapsule(transform.position - Vector3.up * 0.45f, transform.position + Vector3.up * 0.45f, 0.1f);
 
         foreach(Collider wall in wall_Clips)
         {
-            print(wall.transform.tag);
 
             if(wall.transform.tag != "Floor")
             {
@@ -262,12 +259,6 @@ public class Player : MonoBehaviour
     }
 
 
-
-    private void OnTriggerEnter(Collider panel_Collider)
-    {
-        //sprint("Event Is taking place");
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.name == "Teleporter")
@@ -285,6 +276,12 @@ public class Player : MonoBehaviour
             Destroy(collision.gameObject);
             hasBuff = true;
         }
+
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        
     }
 
     public void Shoot()
@@ -297,8 +294,15 @@ public class Player : MonoBehaviour
         my_Gun.ADS();
     }
 
+    public void noADS()
+    {
+        my_Gun.noADS();
+    }
+
     internal bool gotBuff()
     {
         return hasBuff;
     }
+
+    
 }

@@ -12,6 +12,8 @@ public class Open_Secret_Door : MonoBehaviour
     private float door_speed = 1f;
     private Transform left_Door;
     private Transform right_Door;
+    public AudioClip my_ManClip;
+    private AudioSource my_ManSource;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +30,11 @@ public class Open_Secret_Door : MonoBehaviour
                 right_Door = child;
             }
         }
+
+        my_ManSource = gameObject.AddComponent<AudioSource>();
+        my_ManSource.playOnAwake = false;
+        my_ManSource.clip = my_ManClip;
+        my_ManSource.Stop();
     }
 
     // Update is called once per frame
@@ -57,6 +64,7 @@ public class Open_Secret_Door : MonoBehaviour
         if(currently != door_state.Open)
         {
             currently = door_state.Opening;
+            my_ManSource.Play();
         }
         
     }
