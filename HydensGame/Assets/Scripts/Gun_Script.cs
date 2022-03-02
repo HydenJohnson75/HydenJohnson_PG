@@ -6,12 +6,19 @@ using UnityEngine;
 public class Gun_Script : MonoBehaviour
 {
 
-    private Vector3 targetADS = new Vector3(0, -0.041f, 0.1623f);
+    private Vector3 targetADS = new Vector3(0, -0.035f, 0.179f);
+    private Vector3 originalPosition = new Vector3(0.0829f, -0.067f, 0.238f);
+    public ParticleSystem muzzleFlash;
+    public AudioClip gunAudio;
+    private AudioSource gunShot;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        gunShot = gameObject.AddComponent<AudioSource>();
+        gunShot.playOnAwake = false;
+        gunShot.clip = gunAudio;
+        gunShot.Stop();
     }
 
     // Update is called once per frame
@@ -23,6 +30,10 @@ public class Gun_Script : MonoBehaviour
     internal void Shoot()
     {
         Ray gun_Ray = new Ray(this.transform.position + (Vector3.up * 0.02f), Camera.main.transform.forward);
+
+        gunShot.Play();
+        
+        muzzleFlash.Play();
 
         RaycastHit info;
 
@@ -41,6 +52,11 @@ public class Gun_Script : MonoBehaviour
 
     internal void ADS()
     {
-        this.transform.position = Vector3.Lerp(this.transform.localPosition, targetADS, Time.deltaTime);
+        this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, targetADS, (12 * Time.deltaTime));
+    }
+
+    internal void noADS()
+    {
+        this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, originalPosition, (12 * Time.deltaTime));
     }
 }

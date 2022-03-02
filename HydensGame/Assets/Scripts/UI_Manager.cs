@@ -18,6 +18,8 @@ public class UI_Manager : MonoBehaviour
     bool is_Empty = false;
     bool ammo_Res_Empty = false;
     bool hasBuff;
+    public AudioClip reloadingClip;
+    private AudioSource reloadingSource;
 
 
     // Start is called before the first frame update
@@ -31,12 +33,18 @@ public class UI_Manager : MonoBehaviour
         ammo_Counter.text = ammo + "/" + ammo_Reserves;
         buff = my_canvas.gameObject.transform.Find("Buff").GetComponentInChildren<Image>();
         operator_Text = my_canvas.gameObject.transform.Find("Operator_Text").GetComponentInChildren<Text>();
+       
+        
+        reloadingSource = gameObject.AddComponent<AudioSource>();
+        reloadingSource.playOnAwake = false;
+        reloadingSource.clip = reloadingClip;
+        reloadingSource.Stop();
     }
 
     // Update is called once per frame
     void Update()
     {
-        print(interact_Text.text);
+        interact_Text.enabled = false;
 
         if (Input.GetMouseButtonDown(0) && is_Empty == false)
         {
@@ -62,6 +70,7 @@ public class UI_Manager : MonoBehaviour
                 ammo_Reserves = ammo_Reserves - (40-ammo);
                 ammo = 40;
                 is_Empty = false;
+                reloadingSource.Play();
             }
         }
 
@@ -80,5 +89,6 @@ public class UI_Manager : MonoBehaviour
         {
             hasBuff = true;
         }
+
     }
 }

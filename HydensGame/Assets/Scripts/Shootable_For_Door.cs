@@ -9,7 +9,12 @@ public class Shootable_For_Door : MonoBehaviour, I_Shootable
     private Manager my_Man;
     public void Ive_Been_Shot()
     {
-        door.open_Door();
+
+        if (my_Man.playerHasBuff())
+        {
+            door.open_Door();
+        }
+        
     }
 
     // Start is called before the first frame update
@@ -22,11 +27,6 @@ public class Shootable_For_Door : MonoBehaviour, I_Shootable
     // Update is called once per frame
     void Update()
     {
-       /* if (my_Man.playerHasBuff())
-        {
-            
-            door.open_Door();
-           
-        }*/
+      
     }
 }
