@@ -8,7 +8,6 @@ public class Open_Double_Door : MonoBehaviour, I_Actionable
 
     door_state currently = door_state.Closed;
 
-    Vector3 target = new Vector3(-1.957317f, -2.7f, -0f);
     private float door_speed = 1f;
     private Transform top_Door;
     private Transform bottom_Door;

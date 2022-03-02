@@ -11,9 +11,14 @@ public class UI_Manager : MonoBehaviour
     Text ammo_Counter;
     GameObject my_Text;
     Text interact_Text;
+    public GameObject player;  
     Player my_Player;
+    Image buff;
+    Text operator_Text;
     bool is_Empty = false;
     bool ammo_Res_Empty = false;
+    bool hasBuff;
+
 
     // Start is called before the first frame update
     void Start()
@@ -21,9 +26,11 @@ public class UI_Manager : MonoBehaviour
         my_canvas = GetComponentInChildren<Canvas>();
         ammo_Counter = my_canvas.GetComponentInChildren<Text>();
         my_Text = GameObject.FindGameObjectWithTag("Interact");
+        my_Player = player.GetComponent<Player>();
         interact_Text = my_Text.GetComponent<Text>();
-        my_Player = GetComponent<Player>();
         ammo_Counter.text = ammo + "/" + ammo_Reserves;
+        buff = my_canvas.gameObject.transform.Find("Buff").GetComponentInChildren<Image>();
+        operator_Text = my_canvas.gameObject.transform.Find("Operator_Text").GetComponentInChildren<Text>();
     }
 
     // Update is called once per frame
@@ -56,6 +63,22 @@ public class UI_Manager : MonoBehaviour
                 ammo = 40;
                 is_Empty = false;
             }
+        }
+
+        if(hasBuff == false)
+        {
+            buff.enabled = false;
+            operator_Text.enabled = false;
+        }
+        else if(hasBuff == true)
+        {
+            buff.enabled = true;
+            operator_Text.enabled = true;
+        }
+
+        if (my_Player.gotBuff())
+        {
+            hasBuff = true;
         }
     }
 }

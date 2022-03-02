@@ -13,8 +13,6 @@ public class Shootable_Object : MonoBehaviour, I_Shootable
     public void Ive_Been_Shot()
     {
         numberCounter++;
-
-        
     }
 
     // Start is called before the first frame update
