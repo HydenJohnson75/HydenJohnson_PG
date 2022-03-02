@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Open_Door : MonoBehaviour, I_Shootable, I_Actionable
+public class Open_Door : MonoBehaviour, I_Actionable
 {
     enum door_state { Open, Closed, Opening, Closing}
 
@@ -46,8 +46,4 @@ public class Open_Door : MonoBehaviour, I_Shootable, I_Actionable
 
     }
 
-    public void Ive_Been_Shot()
-    {
-        print("I have been shot");
-    }
 }

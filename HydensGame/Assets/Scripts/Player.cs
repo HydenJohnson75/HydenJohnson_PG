@@ -16,16 +16,13 @@ public class Player : MonoBehaviour
     Animator player_Animation;
     Camera player_Camera;
     GameObject main_Cam;
-    Open_Door door;
-    Renderer panel_Render;
-    Material panel_Mat;
-
     FPS_Camera my_Camera;
-    SphereCollider panel_Collider;
+    //SphereCollider panel_Collider;
     focal_Point my_Focal_Point;
     private bool is_Grounded = true;
     Vector3 last_Position;
     Gun_Script my_Gun;
+    bool hasBuff;
 
     // Start is called before the first frame update
     void Start()
@@ -39,11 +36,13 @@ public class Player : MonoBehaviour
         my_Camera = GetComponentInChildren<FPS_Camera>();
         my_Focal_Point = GetComponentInChildren<focal_Point>();
         my_Camera.you_Belong_To_Me(this);
-        panel_Collider = FindObjectOfType<Terminal_Script>().GetComponent<SphereCollider>();
-        door = FindObjectOfType<Open_Door>();
+       // panel_Collider = FindObjectOfType<Terminal_Script>().GetComponent<SphereCollider>();
+
         my_Gun = GetComponentInChildren<Gun_Script>();
-        panel_Mat = panel_Collider.GetComponent<Renderer>().material;
-        panel_Mat.EnableKeyword("_EmissionColor");
+        //panel_Mat = panel_Collider.GetComponent<Renderer>().material;
+        //panel_Mat.EnableKeyword("_EmissionColor");
+
+        hasBuff = false;
     }
 
     // Update is called once per frame
@@ -271,19 +270,21 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        /*print("Hello");
-        
-        if(collision.transform.tag != "Floor")
+        if(collision.gameObject.name == "Teleporter")
         {
-            transform.position = last_Position;
+            this.transform.position = new Vector3(-225.35f, 0, -11.01f);
         }
 
-        if(collision.transform.tag == "Buff")
+        if (collision.gameObject.name == "Teleporter_2")
         {
-            print("You now have a buff");
+            this.transform.position = new Vector3(-90.5999985f, 1.58399999f, -85.101799f);
+        }
 
-            panel_Mat.SetColor("_EmissionColor", Color.red);
-        }*/
+        if(collision.gameObject.name == "Clovis_Symbol")
+        {
+            Destroy(collision.gameObject);
+            hasBuff = true;
+        }
     }
 
     public void Shoot()
@@ -294,5 +295,10 @@ public class Player : MonoBehaviour
     public void ADS()
     {
         my_Gun.ADS();
+    }
+
+    internal bool gotBuff()
+    {
+        return hasBuff;
     }
 }
