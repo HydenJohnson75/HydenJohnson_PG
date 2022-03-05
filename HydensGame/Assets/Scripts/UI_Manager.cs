@@ -90,5 +90,14 @@ public class UI_Manager : MonoBehaviour
             hasBuff = true;
         }
 
+
+        if (my_Player.playerInteract())
+        {
+            interact_Text.enabled = true;
+        }
+        else if(my_Player.playerInteract() == false)
+        {
+            interact_Text.enabled = false;
+        }
     }
 }
