@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     Vector3 last_Position;
     Gun_Script my_Gun;
     bool hasBuff;
-
+    bool isInteracting = false;
 
     // Start is called before the first frame update
     void Start()
@@ -134,6 +134,10 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Shoot();
+        }
+        else
+        {
+
         }
 
         if (Input.GetMouseButton(1))
@@ -304,5 +308,24 @@ public class Player : MonoBehaviour
         return hasBuff;
     }
 
-    
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.name == "Start")
+        {
+            isInteracting = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.name == "Start")
+        {
+            isInteracting = false;
+        }
+    }
+
+    internal bool playerInteract()
+    {
+        return isInteracting;
+    }
 }

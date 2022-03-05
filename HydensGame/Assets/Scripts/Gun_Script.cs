@@ -31,6 +31,7 @@ public class Gun_Script : MonoBehaviour
     {
         Ray gun_Ray = new Ray(this.transform.position + (Vector3.up * 0.02f), Camera.main.transform.forward);
 
+        
         gunShot.Play();
         
         muzzleFlash.Play();
@@ -59,4 +60,5 @@ public class Gun_Script : MonoBehaviour
     {
         this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, originalPosition, (12 * Time.deltaTime));
     }
+
 }
