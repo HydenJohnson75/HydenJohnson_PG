@@ -7,7 +7,7 @@ public class Gun_Script : MonoBehaviour
 {
 
     private Vector3 targetADS = new Vector3(0, -0.035f, 0.179f);
-    private Vector3 originalPosition = new Vector3(0.0829f, -0.067f, 0.238f);
+    private Vector3 originalPosition;
     public ParticleSystem muzzleFlash;
     public AudioClip gunAudio;
     private AudioSource gunShot;
@@ -24,7 +24,15 @@ public class Gun_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(GameObject.Find("Gun").activeSelf == true)
+        {
+            originalPosition = new Vector3(0.0829f, -0.067f, 0.238f);
+        }
+
+        else if(GameObject.Find("SciFiGunLightBlue").activeSelf == true)
+        {
+            originalPosition = new Vector3(0.100f, -0.064f, 0.133f);
+        }
     }
 
     internal void Shoot()
