@@ -5,7 +5,7 @@ using TMPro;
 
 public class Manager : MonoBehaviour
 {
-
+    holoControl[] all_holos;
     Code_Machine_Manager cMM;
     public GameObject secretDoor;
     Open_Secret_Door my_SecretDoor;
@@ -22,6 +22,7 @@ public class Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        all_holos = FindObjectsOfType<holoControl>();
         cMM = FindObjectOfType<Code_Machine_Manager>();
         my_SecretDoor = secretDoor.GetComponent<Open_Secret_Door>();
         my_Player = player.GetComponent<Player>();
@@ -56,13 +57,17 @@ public class Manager : MonoBehaviour
         {
             timer -= Time.deltaTime;
             print("Game On");
-            my_Boss.open_Door();
+            foreach (holoControl holo in all_holos)
+                holo.open_Door();
         }
-
         if(timer <= 0)
         {
+            gameOn = false;
             print("Game Over");
-            //my_Boss.close_Door();
+
+            timer += 20;
+            foreach (holoControl holo in all_holos)
+                holo.close_Door();
         }
     }
 
