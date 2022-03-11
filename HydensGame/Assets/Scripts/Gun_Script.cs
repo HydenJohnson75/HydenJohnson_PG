@@ -11,6 +11,8 @@ public class Gun_Script : MonoBehaviour
     public ParticleSystem muzzleFlash;
     public AudioClip gunAudio;
     private AudioSource gunShot;
+    private float fireRate;
+    private float fireTime;
 
     // Start is called before the first frame update
     void Start()
@@ -24,40 +26,48 @@ public class Gun_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GameObject.Find("Gun").activeSelf == true)
-        {
-            originalPosition = new Vector3(0.0829f, -0.067f, 0.238f);
-        }
 
-        else if(GameObject.Find("SciFiGunLightBlue").activeSelf == true)
-        {
-            originalPosition = new Vector3(0.100f, -0.064f, 0.133f);
-        }
     }
 
     internal void Shoot()
     {
-        Ray gun_Ray = new Ray(this.transform.position + (Vector3.up * 0.02f), Camera.main.transform.forward);
 
-        
-        gunShot.Play();
-        
-        muzzleFlash.Play();
+        fireTime -= Time.deltaTime;
 
-        RaycastHit info;
-
-        if (Physics.Raycast(gun_Ray, out info))
+        if (fireTime <= 0)
         {
-            I_Shootable target = info.transform.GetComponent<I_Shootable>();
-            if(target != null)
-            {
-                target.Ive_Been_Shot();
-            }
-        }
+                     
+            Ray gun_Ray = new Ray(this.transform.position + (Vector3.up * 0.02f), Camera.main.transform.forward);
 
-        Debug.DrawRay(this.transform.position + (Vector3.up * 0.03f), Camera.main.transform.forward * 10f, Color.green);
+            gunShot.Play();
+
+            muzzleFlash.Play();
+
+            RaycastHit info;
+
+            if (Physics.Raycast(gun_Ray, out info))
+            {
+                I_Shootable target = info.transform.GetComponent<I_Shootable>();
+                if (target != null)
+                {
+                    target.Ive_Been_Shot();
+                }
+            }
+
+            Debug.DrawRay(this.transform.position + (Vector3.up * 0.03f), Camera.main.transform.forward * 10f, Color.green);
+
+            fireTime = fireRate;
+        }
+        
+        
     }
 
+    internal void setup(Vector3 default_position,float fire_Time,float fire_Rate)
+    {
+        originalPosition = default_position;
+        fireTime = fire_Time;
+        fireRate = fire_Rate;
+    }
 
     internal void ADS()
     {
