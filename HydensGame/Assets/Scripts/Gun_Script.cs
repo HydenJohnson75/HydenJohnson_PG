@@ -31,6 +31,7 @@ public class Gun_Script : MonoBehaviour
 
     internal void Shoot()
     {
+        print(fireTime);
 
         fireTime -= Time.deltaTime;
 
