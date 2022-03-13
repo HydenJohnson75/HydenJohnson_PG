@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     focal_Point my_Focal_Point;
     private bool is_Grounded = true;
     Vector3 last_Position;
+    List<Gun_Script> my_Guns;
     Gun_Script my_Gun;
     bool hasBuff;
     bool isInteracting = false;
@@ -36,8 +38,26 @@ public class Player : MonoBehaviour
         my_Camera = GetComponentInChildren<FPS_Camera>();
         my_Focal_Point = GetComponentInChildren<focal_Point>();
         my_Camera.you_Belong_To_Me(this);
-        my_Gun = GetComponentInChildren<Gun_Script>();
+        my_Guns = GetComponentsInChildren<Gun_Script>().ToList();
         hasBuff = false;
+        setup_guns(my_Guns);
+        my_Gun = activate_gun(0);
+    }
+
+    private void setup_guns(List<Gun_Script> my_guns)
+    {
+        my_guns[0].setup(new Vector3(0.0829f, -0.067f, 0.238f),0,0);
+        my_guns[1].setup( new Vector3(0.100f, -0.064f, 0.133f),0.01f,5);
+
+    }
+
+    private Gun_Script activate_gun(int v)
+    {
+        foreach (Gun_Script gun in my_Guns)
+            gun.gameObject.active = false;
+
+        my_Guns[v].gameObject.active = true;
+        return my_Guns[v];
     }
 
     // Update is called once per frame
@@ -75,7 +95,7 @@ public class Player : MonoBehaviour
             strafe_Right();
         }
 
- 
+
         turn(Input.GetAxis("Horizontal"));
         adjust_Camera(Input.GetAxis("Vertical"));
 
@@ -88,8 +108,8 @@ public class Player : MonoBehaviour
             current_Speed = walking_Speed;
         }
 
-        
 
+        
 
         if (transform.position.y < 1.42f)
         {
@@ -113,31 +133,32 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position + 0.7f * Vector3.up + 0.5f * transform.forward, 0.5f);
-            
+
 
             foreach (Collider c in colliders)
             {
                 I_Interactable Interact_Script = c.GetComponent<I_Interactable>();
-                if (Interact_Script != null )
+                if (Interact_Script != null)
                 {
                     Interact_Script.Interact();
                 }
                 else
                 {
-                    
+
                 }
 
             }
 
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (my_Gun == my_Guns[0] && Input.GetMouseButtonDown(0))
         {
             Shoot();
         }
-        else
+        
+        if(my_Gun == my_Guns[1] && Input.GetMouseButton(0))
         {
-
+            Shoot();
         }
 
         if (Input.GetMouseButton(1))
@@ -151,20 +172,26 @@ public class Player : MonoBehaviour
 
         Collider[] wall_Clips = Physics.OverlapCapsule(transform.position - Vector3.up * 0.45f, transform.position + Vector3.up * 0.45f, 0.1f);
 
-        foreach(Collider wall in wall_Clips)
+        foreach (Collider wall in wall_Clips)
         {
 
-            if(wall.transform.tag != "Floor")
+            if (wall.transform.tag != "Floor")
             {
                 transform.position = last_Position;
             }
-          
+
         }
 
 
         if (jumped() && is_Grounded == true)
         {
             jump();
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+
+        {
+            my_Gun = activate_gun(1);
         }
     }
 
