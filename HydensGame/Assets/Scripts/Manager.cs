@@ -18,6 +18,9 @@ public class Manager : MonoBehaviour
     float timer = 20;
     public GameObject boss;
     BossScript my_Boss;
+    List<AI_Controller> all_Enemies;
+    public GameObject enemy;
+    Vector3 spawn_Loc = new Vector3(-106.300f, 1.197f, -43.419f);
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +34,9 @@ public class Manager : MonoBehaviour
         panel_Mat = panel_Render.GetComponent<Renderer>().material;
         panel_Mat.EnableKeyword("_EmissionColor");
         my_Boss = boss.GetComponent<BossScript>();
+        all_Enemies = new List<AI_Controller>();
         gameOn = false;
+        spawnAI();
     }
 
     // Update is called once per frame
@@ -74,6 +79,23 @@ public class Manager : MonoBehaviour
     internal bool playerHasBuff()
     {
         return my_Player.gotBuff();
+    }
+
+    internal void spawnAI()
+    {
+        for(int i = 0; i<1; i++)
+        {
+            GameObject new_AI = Instantiate(enemy, spawn_Loc, Quaternion.identity);
+
+            AI_Controller new_Ai_Controller = new_AI.GetComponent<AI_Controller>();
+
+            if (new_Ai_Controller)
+            {
+                new_Ai_Controller.addManager(this);
+                all_Enemies.Add(new_Ai_Controller);
+            }
+        }
+        
     }
 
 }

@@ -47,16 +47,16 @@ public class Player : MonoBehaviour
     private void setup_guns(List<Gun_Script> my_guns)
     {
         my_guns[0].setup(new Vector3(0.0829f, -0.067f, 0.238f),0,0);
-        my_guns[1].setup( new Vector3(0.100f, -0.064f, 0.133f),0.01f,5);
+        my_guns[1].setup( new Vector3(0.100f, -0.064f, 0.133f),0.1f,0.2f);
 
     }
 
     private Gun_Script activate_gun(int v)
     {
         foreach (Gun_Script gun in my_Guns)
-            gun.gameObject.active = false;
+            gun.gameObject.SetActive(false);
 
-        my_Guns[v].gameObject.active = true;
+        my_Guns[v].gameObject.SetActive(true);
         return my_Guns[v];
     }
 
@@ -188,8 +188,12 @@ public class Player : MonoBehaviour
             jump();
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            my_Gun = activate_gun(0);
+        }
 
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             my_Gun = activate_gun(1);
         }
@@ -308,6 +312,11 @@ public class Player : MonoBehaviour
             hasBuff = true;
         }
 
+        if(collision.gameObject.name == "SciFiGunLightBlue")
+        {
+            Destroy(collision.gameObject);
+            my_Gun = activate_gun(1);
+        }
     }
 
     private void OnCollisionStay(Collision collision)
