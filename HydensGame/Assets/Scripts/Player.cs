@@ -28,7 +28,22 @@ public class Player : MonoBehaviour
     bool isInteracting = false;
     private NavMeshAgent navMeshAgent;
 
-    private void Awake()
+
+
+
+    private IEnumerator Countdown()
+    {
+        float duration = 2f; // 3 seconds you can change this 
+                             //to whatever you want
+        float normalizedTime = 0;
+        while (normalizedTime <= 1f)
+        {
+            normalizedTime += Time.deltaTime / duration;
+            yield return null;
+        }
+    }
+
+        private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
@@ -50,6 +65,8 @@ public class Player : MonoBehaviour
         setup_guns(my_Guns);
         my_Gun = activate_gun(0);
     }
+
+
 
     private void setup_guns(List<Gun_Script> my_guns)
     {
@@ -193,7 +210,16 @@ public class Player : MonoBehaviour
         if (jumped() && is_Grounded == true)
         {
             jump();
+
+            
+            
         }
+
+        /*if (!is_Grounded)
+        {
+            StartCoroutine(Countdown()); 
+            navMeshAgent.GetComponent<NavMeshAgent>().enabled = true;   
+        }*/
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -283,6 +309,7 @@ public class Player : MonoBehaviour
 
     private void jump()
     {
+        navMeshAgent.GetComponent<NavMeshAgent>().enabled = false;
         GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.up) * 300);
         player_Animation.SetBool("walking_Forward", false);
         player_Animation.SetBool("running", false);
@@ -324,6 +351,7 @@ public class Player : MonoBehaviour
             Destroy(collision.gameObject);
             my_Gun = activate_gun(1);
         }
+
     }
 
     private void OnCollisionStay(Collision collision)
@@ -370,5 +398,22 @@ public class Player : MonoBehaviour
     internal bool playerInteract()
     {
         return isInteracting;
+    }
+
+
+    internal bool jumpTimer()
+    {
+        bool timerReady = false;
+        float my_Timer = 2f;
+
+        my_Timer -= Time.deltaTime;
+
+        if(my_Timer <= 0)
+        {
+            timerReady = true;
+            my_Timer = 2f;
+        }
+
+        return timerReady;
     }
 }
