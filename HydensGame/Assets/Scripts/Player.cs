@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
@@ -25,6 +26,12 @@ public class Player : MonoBehaviour
     Gun_Script my_Gun;
     bool hasBuff;
     bool isInteracting = false;
+    private NavMeshAgent navMeshAgent;
+
+    private void Awake()
+    {
+        navMeshAgent = GetComponent<NavMeshAgent>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -170,7 +177,7 @@ public class Player : MonoBehaviour
             noADS();
         }
 
-        Collider[] wall_Clips = Physics.OverlapCapsule(transform.position - Vector3.up * 0.45f, transform.position + Vector3.up * 0.45f, 0.1f);
+        /*Collider[] wall_Clips = Physics.OverlapCapsule(transform.position - Vector3.up * 0.45f, transform.position + Vector3.up * 0.45f, 0.1f);
 
         foreach (Collider wall in wall_Clips)
         {
@@ -180,7 +187,7 @@ public class Player : MonoBehaviour
                 transform.position = last_Position;
             }
 
-        }
+        }*/
 
 
         if (jumped() && is_Grounded == true)
