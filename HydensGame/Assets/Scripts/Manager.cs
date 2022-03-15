@@ -83,7 +83,7 @@ public class Manager : MonoBehaviour
 
     internal void spawnAI()
     {
-        for(int i = 0; i<1; i++)
+        for(int i = 0; i<5; i++)
         {
             GameObject new_AI = Instantiate(enemy, spawn_Loc, Quaternion.identity);
 
@@ -96,6 +96,11 @@ public class Manager : MonoBehaviour
             }
         }
         
+    }
+
+    internal Transform givePlayerTransform()
+    {
+        return player.transform;
     }
 
 }
