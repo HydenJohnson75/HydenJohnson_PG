@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     Gun_Script my_Gun;
     bool hasBuff;
     bool isInteracting = false;
+    bool hasGun2;
     private NavMeshAgent navMeshAgent;
     private Rigidbody rb;
 
@@ -66,6 +67,7 @@ public class Player : MonoBehaviour
         setup_guns(my_Guns);
         my_Gun = activate_gun(0);
         rb = GetComponent<Rigidbody>();
+        hasGun2 = false;
     }
 
 
@@ -238,7 +240,11 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            my_Gun = activate_gun(1);
+            if (hasGun2)
+            {
+                my_Gun = activate_gun(1);
+            }
+            
         }
     }
 
@@ -360,6 +366,7 @@ public class Player : MonoBehaviour
         {
             Destroy(collision.gameObject);
             my_Gun = activate_gun(1);
+            hasGun2 = true;
         }
 
     }
