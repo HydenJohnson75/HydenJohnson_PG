@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     bool hasBuff;
     bool isInteracting = false;
     private NavMeshAgent navMeshAgent;
+    private Rigidbody rb;
 
 
 
@@ -64,6 +65,7 @@ public class Player : MonoBehaviour
         hasBuff = false;
         setup_guns(my_Guns);
         my_Gun = activate_gun(0);
+        rb = GetComponent<Rigidbody>();
     }
 
 
@@ -138,6 +140,11 @@ public class Player : MonoBehaviour
         if (transform.position.y < 1.42f)
         {
             is_Grounded = true;
+            if(rb.velocity.y < 0)
+            {
+                navMeshAgent.enabled = true;
+            }
+             
         }
         else
         {
@@ -215,11 +222,14 @@ public class Player : MonoBehaviour
             
         }
 
-        /*if (!is_Grounded)
-        {
-            StartCoroutine(Countdown()); 
-            navMeshAgent.GetComponent<NavMeshAgent>().enabled = true;   
-        }*/
+        if (Input.GetKeyDown(KeyCode.P))
+            navMeshAgent.enabled = true;
+
+        //if (!is_Grounded)
+        //{
+        //    StartCoroutine(Countdown()); 
+        //    navMeshAgent.enabled = true;   
+        //}
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -309,7 +319,7 @@ public class Player : MonoBehaviour
 
     private void jump()
     {
-        navMeshAgent.GetComponent<NavMeshAgent>().enabled = false;
+        navMeshAgent.enabled = false;
         GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.up) * 300);
         player_Animation.SetBool("walking_Forward", false);
         player_Animation.SetBool("running", false);
