@@ -369,6 +369,16 @@ public class Player : MonoBehaviour
             hasGun2 = true;
         }
 
+        if(collision.gameObject.name == "SpeedBuff")
+        {
+            setBuffSpeed();
+        }
+
+        if (collision.gameObject.name == "SpeedBuffLow")
+        {
+            setBuffSpeedLow();
+        }
+
     }
 
     private void OnCollisionStay(Collision collision)
@@ -432,5 +442,17 @@ public class Player : MonoBehaviour
         }
 
         return timerReady;
+    }
+
+    private void setBuffSpeed()
+    {
+        walking_Speed = 8;
+        running_Speed = 32;
+    }
+
+    private void setBuffSpeedLow()
+    {
+        walking_Speed = 2;
+        running_Speed = 6;
     }
 }

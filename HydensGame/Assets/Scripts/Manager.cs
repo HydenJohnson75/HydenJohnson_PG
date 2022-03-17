@@ -20,7 +20,13 @@ public class Manager : MonoBehaviour
     BossScript my_Boss;
     List<AI_Controller> all_Enemies;
     public GameObject enemy;
-    Vector3 spawn_Loc = new Vector3(-106.300f, 1.197f, -43.419f);
+    Vector3 spawn_Loc1 = new Vector3(-110.270f, 1.233f, -20.899f);
+    Vector3 spawn_Loc2 = new Vector3(-110.270f, 1.233f, -20.899f);
+    float waitTime;
+    float startWaitTime = 10f;
+    public Transform startPoint1;
+    public Transform[] movePoints1;
+
 
     // Start is called before the first frame update
     void Start()
@@ -36,14 +42,30 @@ public class Manager : MonoBehaviour
         my_Boss = boss.GetComponent<BossScript>();
         all_Enemies = new List<AI_Controller>();
         gameOn = false;
-        spawnAI();
+        spawnAI1();
+
+        waitTime = startWaitTime;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(all_Enemies.Count < 6)
+        {
+            if (waitTime <= 0)
+            {
+                spawnAI1();
+                waitTime = startWaitTime;
+            }
+            else
+            {
+                waitTime -= Time.deltaTime;
+            }
+        }
+        
+        
 
-        if(cMM.currentNumberCheck() == 1234)
+        if (cMM.currentNumberCheck() == 1234)
         {
             my_SecretDoor.open_Door();
         }
@@ -81,26 +103,50 @@ public class Manager : MonoBehaviour
         return my_Player.gotBuff();
     }
 
-    internal void spawnAI()
+    internal void spawnAI1()
     {
-        for(int i = 0; i<5; i++)
+
+        GameObject new_AI = Instantiate(enemy, spawn_Loc1, Quaternion.identity);
+
+        AI_Controller new_Ai_Controller = new_AI.GetComponent<AI_Controller>();
+
+        if (new_Ai_Controller)
         {
-            GameObject new_AI = Instantiate(enemy, spawn_Loc, Quaternion.identity);
-
-            AI_Controller new_Ai_Controller = new_AI.GetComponent<AI_Controller>();
-
-            if (new_Ai_Controller)
-            {
-                new_Ai_Controller.addManager(this);
-                all_Enemies.Add(new_Ai_Controller);
-            }
+            new_Ai_Controller.addManager(this);
+            all_Enemies.Add(new_Ai_Controller);
         }
-        
+
+    }
+
+    internal void spawnAI2()
+    {
+
+        GameObject new_AI = Instantiate(enemy, spawn_Loc2, Quaternion.identity);
+
+        AI_Controller new_Ai_Controller = new_AI.GetComponent<AI_Controller>();
+
+        if (new_Ai_Controller)
+        {
+            new_Ai_Controller.addManager(this);
+            all_Enemies.Add(new_Ai_Controller);
+        }
+
     }
 
     internal Transform givePlayerTransform()
     {
         return player.transform;
     }
+
+    internal Transform giveStartPoint() 
+    {
+        return startPoint1;
+    }
+
+    internal Transform[] giveMovePoints()
+    {
+        return movePoints1;
+    }
+
 
 }
