@@ -23,7 +23,7 @@ public class Manager : MonoBehaviour
     Vector3 spawn_Loc1 = new Vector3(-110.270f, 1.233f, -20.899f);
     Vector3 spawn_Loc2 = new Vector3(-110.270f, 1.233f, -20.899f);
     float waitTime;
-    float startWaitTime = 10f;
+    float startWaitTime = 6f;
     public Transform startPoint1;
     public Transform[] movePoints1;
 
@@ -63,6 +63,7 @@ public class Manager : MonoBehaviour
             }
         }
         
+
         
 
         if (cMM.currentNumberCheck() == 1234)
@@ -148,5 +149,9 @@ public class Manager : MonoBehaviour
         return movePoints1;
     }
 
+    internal void Im_Dead(AI_Controller AI)
+    {
+            all_Enemies.Remove(AI);
+    }
 
 }
