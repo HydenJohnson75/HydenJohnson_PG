@@ -8,6 +8,7 @@ public class AI_Controller : MonoBehaviour,I_Shootable
 {
     Manager my_Manager;
     enum ai_State { Alive, Dying, Dead, Attacking, Searching, Idle, StartingPatrol}
+    internal int spawn_point_index = 0;
     int enemy_HP;
     ai_State current_State;
     Animator ai_Animation;
@@ -22,6 +23,7 @@ public class AI_Controller : MonoBehaviour,I_Shootable
     private int randomPoint;
 
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,8 +31,8 @@ public class AI_Controller : MonoBehaviour,I_Shootable
         ai_Animation = GetComponentInParent<Animator>();
         navMesh = GetComponent<NavMeshAgent>();
         target = my_Manager.givePlayerTransform();
-        startPoint = my_Manager.giveStartPoint();
-        movePoints = my_Manager.giveMovePoints();
+        startPoint = my_Manager.giveStartPoint(this);
+        movePoints = my_Manager.giveMovePoints(this);
         randomPoint = UnityEngine.Random.Range(0, movePoints.Length);
         current_State = ai_State.StartingPatrol;
     }
@@ -127,9 +129,10 @@ public class AI_Controller : MonoBehaviour,I_Shootable
         ai_Animation.SetBool("is_Dead", false);
     }
 
-    internal void addManager(Manager manager)
+    internal void addManager(Manager manager, int spawn_index)
     {
         my_Manager = manager;
+        spawn_point_index = spawn_index;
     }
 
     public void Ive_Been_Shot()
