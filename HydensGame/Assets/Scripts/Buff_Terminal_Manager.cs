@@ -6,33 +6,26 @@ public class Buff_Terminal_Manager : MonoBehaviour
 {
 
     Boss_Terminals[] terminals;
+    Boss_Terminals [] selectedTerminals;
     private Manager my_Man;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        terminals = this.GetComponentsInChildren<Boss_Terminals>();
+
+        terminals = gameObject.GetComponentsInChildren<Boss_Terminals>();
+        
         my_Man = GameObject.Find("Manager").GetComponent<Manager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        print(terminals.Length);
 
         if (my_Man.playerHasBuff())
         {
-            /*for(int j = 0; j < 4; j++)
-            {
-                for (int i = 0; i < terminals.Length; i++)
-                {
-                    if (i == randomNumber())
-                    {
-                        print(terminals[i].name);
-                    }
-                }
-            }*/
+              selectedTerminals = selectTerminals(terminals);
         }
     }
 
@@ -43,5 +36,26 @@ public class Buff_Terminal_Manager : MonoBehaviour
 
         return randomNumber;
         
+    }
+
+
+    private Boss_Terminals[] selectTerminals(Boss_Terminals[] my_BT)
+    {
+        Boss_Terminals[] my_Terms = new Boss_Terminals[4];
+
+        for(int j = 0; j < my_Terms.Length; j++)
+        {
+            my_Terms[j] = my_BT[Random.Range(0, 9)];
+        }
+
+        return my_Terms;
+    }
+
+    private void changeTermColor(Boss_Terminals[] selectedTerms)
+    {
+        for(int i = 0; i < selectedTerminals.Length; i++)
+        {
+
+        }
     }
 }

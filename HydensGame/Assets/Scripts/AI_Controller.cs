@@ -59,6 +59,7 @@ public class AI_Controller : MonoBehaviour,I_Shootable
         {
             navMesh.velocity = Vector3.zero;
             navMesh.isStopped = true;
+            my_Manager.Im_Dead(this);
         }
 
         if (distanceTo > attack_Radius && current_State != ai_State.StartingPatrol)
