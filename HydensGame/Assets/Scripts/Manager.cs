@@ -5,6 +5,7 @@ using TMPro;
 
 public class Manager : MonoBehaviour
 {
+    bool generatingInitialMobs = true;
     holoControl[] all_holos;
     Code_Machine_Manager cMM;
     public GameObject secretDoor;
@@ -21,11 +22,13 @@ public class Manager : MonoBehaviour
     List<AI_Controller> all_Enemies;
     public GameObject enemy;
     Vector3 spawn_Loc1 = new Vector3(-110.270f, 1.233f, -20.899f);
-    Vector3 spawn_Loc2 = new Vector3(-110.270f, 1.233f, -20.899f);
+    Vector3 spawn_Loc2 = new Vector3(-66.989f, 1.224f, -20.004f);
     float waitTime;
     float startWaitTime = 6f;
     public Transform startPoint1;
+    public Transform startPoint2;
     public Transform[] movePoints1;
+    public Transform[] movePoints2;
 
 
     // Start is called before the first frame update
@@ -42,7 +45,6 @@ public class Manager : MonoBehaviour
         my_Boss = boss.GetComponent<BossScript>();
         all_Enemies = new List<AI_Controller>();
         gameOn = false;
-        spawnAI1();
 
         waitTime = startWaitTime;
     }
@@ -50,12 +52,17 @@ public class Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(all_Enemies.Count < 6)
+        if(generatingInitialMobs)
         {
             if (waitTime <= 0)
             {
                 spawnAI1();
+                spawnAI2();
                 waitTime = startWaitTime;
+                if (all_Enemies.Count >= 12)
+                {
+                    generatingInitialMobs = false;
+                }
             }
             else
             {
@@ -113,7 +120,7 @@ public class Manager : MonoBehaviour
 
         if (new_Ai_Controller)
         {
-            new_Ai_Controller.addManager(this);
+            new_Ai_Controller.addManager(this, 0);
             all_Enemies.Add(new_Ai_Controller);
         }
 
@@ -128,7 +135,7 @@ public class Manager : MonoBehaviour
 
         if (new_Ai_Controller)
         {
-            new_Ai_Controller.addManager(this);
+            new_Ai_Controller.addManager(this, 1);
             all_Enemies.Add(new_Ai_Controller);
         }
 
@@ -139,19 +146,45 @@ public class Manager : MonoBehaviour
         return player.transform;
     }
 
-    internal Transform giveStartPoint() 
+    internal Transform giveStartPoint(AI_Controller enemy) 
     {
-        return startPoint1;
+        if (enemy.spawn_point_index == 0)
+        {
+            return startPoint1;
+        }
+        else
+            return startPoint2;
     }
 
-    internal Transform[] giveMovePoints()
+    internal Transform[] giveMovePoints(AI_Controller enemy)
     {
-        return movePoints1;
+        if (enemy.spawn_point_index == 0)
+        {
+            return movePoints1;
+        }
+        else
+            return movePoints2;
     }
 
     internal void Im_Dead(AI_Controller AI)
     {
-            all_Enemies.Remove(AI);
+        all_Enemies.Remove(AI);
+        
+        if(all_Enemies.Count < 12)
+        {
+            if (AI.spawn_point_index == 0)
+            {
+                spawnAI1();
+            }
+            else
+            {
+                spawnAI2();
+            }
+        }
+        
+            
+
+
     }
 
 }

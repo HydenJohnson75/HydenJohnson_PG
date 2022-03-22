@@ -8,6 +8,7 @@ public class Buff_Terminal_Manager : MonoBehaviour
     Boss_Terminals[] terminals;
     Boss_Terminals [] selectedTerminals;
     private Manager my_Man;
+    bool terminals_Set = false;
 
 
     // Start is called before the first frame update
@@ -25,14 +26,29 @@ public class Buff_Terminal_Manager : MonoBehaviour
 
         if (my_Man.playerHasBuff())
         {
-              selectedTerminals = selectTerminals(terminals);
+            if (!terminals_Set)
+            {
+                selectedTerminals = selectTerminals(terminals);
+                terminals_Set = true;
+            }
+
+
+            
+            changeTermColor(selectedTerminals);
+
+            for(int i = 0; i < selectedTerminals.Length; i++)
+            {
+                print(selectedTerminals[i]);
+            }
         }
+
+        
     }
 
     public int randomNumber()
     {
 
-        int randomNumber = Random.Range(0, 15);
+        int randomNumber = Random.Range(0, 9);
 
         return randomNumber;
         
@@ -45,17 +61,27 @@ public class Buff_Terminal_Manager : MonoBehaviour
 
         for(int j = 0; j < my_Terms.Length; j++)
         {
-            my_Terms[j] = my_BT[Random.Range(0, 9)];
+            my_Terms[j] = my_BT[Random.Range(0,9)];
         }
+
+
 
         return my_Terms;
     }
 
     private void changeTermColor(Boss_Terminals[] selectedTerms)
     {
-        for(int i = 0; i < selectedTerminals.Length; i++)
-        {
+        Material panel_Mat;
 
+        for (int i = 0; i < selectedTerminals.Length; i++)
+        {
+            
+            panel_Mat = selectedTerminals[i].GetComponentInChildren<Renderer>().material;
+
+            panel_Mat.EnableKeyword("_EmissionColor");
+
+            panel_Mat.SetColor("_EmissionColor", Color.red);
+            
         }
     }
 }

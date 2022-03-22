@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     private bool is_Grounded = true;
     Vector3 last_Position;
     List<Gun_Script> my_Guns;
-    Gun_Script my_Gun;
+    internal Gun_Script my_Gun;
     bool hasBuff;
     bool isInteracting = false;
     bool hasGun2;
@@ -154,15 +154,6 @@ public class Player : MonoBehaviour
         }
 
 
-        //if (is_Crouching())
-        //{
-        //    crouch();
-        //}
-        //if(main_Cam.transform.position.y <= 0.72)
-        //{
-        //    main_Cam.transform.position = new Vector3(transform.position.x, (0.92f * Time.deltaTime), transform.position.z);
-        //}
-
         if (Input.GetKeyDown(KeyCode.E))
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position + 0.7f * Vector3.up + 0.5f * transform.forward, 0.5f);
@@ -186,7 +177,7 @@ public class Player : MonoBehaviour
 
         if (my_Gun == my_Guns[0] && Input.GetMouseButtonDown(0))
         {
-            Shoot();
+            //Shoot();
         }
         
         if(my_Gun == my_Guns[1] && Input.GetMouseButton(0))
@@ -233,14 +224,14 @@ public class Player : MonoBehaviour
         //    navMeshAgent.enabled = true;   
         //}
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && my_Gun != my_Guns[0])
         {
             my_Gun = activate_gun(0);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (hasGun2)
+            if (hasGun2 && my_Gun != my_Guns[1])
             {
                 my_Gun = activate_gun(1);
             }
