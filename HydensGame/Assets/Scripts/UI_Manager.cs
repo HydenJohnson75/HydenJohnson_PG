@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
-    private int ammo = 40;
+    private int ammo = 10;
     private int ammo_Reserves = 200;
     Canvas my_canvas;
     Text ammo_Counter;
@@ -16,7 +16,6 @@ public class UI_Manager : MonoBehaviour
     Image buff;
     Text operator_Text;
     bool is_Empty = false;
-    bool ammo_Res_Empty = false;
     bool hasBuff;
     public AudioClip reloadingClip;
     private AudioSource reloadingSource;
@@ -33,8 +32,7 @@ public class UI_Manager : MonoBehaviour
         ammo_Counter.text = ammo + "/" + ammo_Reserves;
         buff = my_canvas.gameObject.transform.Find("Buff").GetComponentInChildren<Image>();
         operator_Text = my_canvas.gameObject.transform.Find("Operator_Text").GetComponentInChildren<Text>();
-       
-        
+
         reloadingSource = gameObject.AddComponent<AudioSource>();
         reloadingSource.playOnAwake = false;
         reloadingSource.clip = reloadingClip;
@@ -49,28 +47,22 @@ public class UI_Manager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && is_Empty == false)
         {
             ammo--;
+            my_Player.Shoot();
         }
 
-        ammo_Counter.text = ammo + "/" + ammo_Reserves;
+        ammo_Counter.text = ammo.ToString();
 
         if(ammo <= 0)
         {
             is_Empty = true;
         }
 
-        if(ammo_Reserves == 0)
-        {
-            ammo_Res_Empty = true;
-        }
-
-        if(ammo_Res_Empty == false)
+        if (is_Empty)
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                ammo_Reserves = ammo_Reserves - (40-ammo);
-                ammo = 40;
+                ammo = 10;
                 is_Empty = false;
-                reloadingSource.Play();
             }
         }
 
