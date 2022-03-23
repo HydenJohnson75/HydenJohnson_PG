@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+
 
 public class Manager : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class Manager : MonoBehaviour
     Renderer panel_Render;
     Material panel_Mat;
     GameObject colorChange;
-    bool gameOn;
+    internal bool gameOn;
     float timer = 20;
     public GameObject boss;
     BossScript my_Boss;
@@ -29,6 +29,8 @@ public class Manager : MonoBehaviour
     public Transform startPoint2;
     public Transform[] movePoints1;
     public Transform[] movePoints2;
+    private Gun_Script playersActiveGun;
+    internal UI_Manager ui_Manager;
 
 
     // Start is called before the first frame update
@@ -45,8 +47,9 @@ public class Manager : MonoBehaviour
         my_Boss = boss.GetComponent<BossScript>();
         all_Enemies = new List<AI_Controller>();
         gameOn = false;
-
         waitTime = startWaitTime;
+        my_Boss.addManager(this);
+        ui_Manager = GameObject.Find("UIManager").GetComponent<UI_Manager>();
     }
 
     // Update is called once per frame
@@ -69,9 +72,15 @@ public class Manager : MonoBehaviour
                 waitTime -= Time.deltaTime;
             }
         }
-        
 
+
+
+        findPlayerGun(my_Player.giveActiveGun());
         
+        foreach(holoControl f in all_holos)
+        {
+            f.findDmg(playersActiveGun.giveGunDmg());
+        }
 
         if (cMM.currentNumberCheck() == 1234)
         {
@@ -104,6 +113,8 @@ public class Manager : MonoBehaviour
             foreach (holoControl holo in all_holos)
                 holo.close_Door();
         }
+
+        print(playersActiveGun.gameObject);
     }
 
     internal bool playerHasBuff()
@@ -181,10 +192,29 @@ public class Manager : MonoBehaviour
                 spawnAI2();
             }
         }
-        
-            
-
 
     }
+
+    private void findPlayerGun(Gun_Script activeGun)
+    {
+        playersActiveGun = activeGun;
+    }
+
+    internal Gun_Script givePlayerGun()
+    {
+        return playersActiveGun;
+    }
+
+    internal bool giveGameOn()
+    {
+        return gameOn;
+    }
+
+    internal void setGameOn(bool allShot)
+    {
+        gameOn = allShot;
+    }
+
+
 
 }

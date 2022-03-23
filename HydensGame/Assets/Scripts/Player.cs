@@ -29,23 +29,9 @@ public class Player : MonoBehaviour
     bool hasGun2;
     private NavMeshAgent navMeshAgent;
     private Rigidbody rb;
+    private bool hasSpeedBuff;
 
-
-
-
-    private IEnumerator Countdown()
-    {
-        float duration = 2f; // 3 seconds you can change this 
-                             //to whatever you want
-        float normalizedTime = 0;
-        while (normalizedTime <= 1f)
-        {
-            normalizedTime += Time.deltaTime / duration;
-            yield return null;
-        }
-    }
-
-        private void Awake()
+    private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
@@ -68,14 +54,15 @@ public class Player : MonoBehaviour
         my_Gun = activate_gun(0);
         rb = GetComponent<Rigidbody>();
         hasGun2 = false;
+        hasSpeedBuff = false;
     }
 
 
 
     private void setup_guns(List<Gun_Script> my_guns)
     {
-        my_guns[0].setup(new Vector3(0.0829f, -0.067f, 0.238f),0,0);
-        my_guns[1].setup( new Vector3(0.100f, -0.064f, 0.133f),0.1f,0.2f);
+        my_guns[0].setup(new Vector3(0.0829f, -0.067f, 0.238f),0,0,2);
+        my_guns[1].setup( new Vector3(0.100f, -0.064f, 0.133f),0.1f,0.2f,5);
 
     }
 
@@ -194,17 +181,6 @@ public class Player : MonoBehaviour
             noADS();
         }
 
-        /*Collider[] wall_Clips = Physics.OverlapCapsule(transform.position - Vector3.up * 0.45f, transform.position + Vector3.up * 0.45f, 0.1f);
-
-        foreach (Collider wall in wall_Clips)
-        {
-
-            if (wall.transform.tag != "Floor")
-            {
-                transform.position = last_Position;
-            }
-
-        }*/
 
 
         if (jumped() && is_Grounded == true)
@@ -216,14 +192,10 @@ public class Player : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.P))
+        {
             navMeshAgent.enabled = true;
-
-        //if (!is_Grounded)
-        //{
-        //    StartCoroutine(Countdown()); 
-        //    navMeshAgent.enabled = true;   
-        //}
-
+        }
+            
         if (Input.GetKeyDown(KeyCode.Alpha1) && my_Gun != my_Guns[0])
         {
             my_Gun = activate_gun(0);
@@ -256,7 +228,6 @@ public class Player : MonoBehaviour
 
     private void adjust_Camera(float vertical_Adjustment)
     {
-        //my_Camera.adjust_Vertical_Angle(vertical_Adjustment);
         my_Focal_Point.adjust_Vertical_Angle(vertical_Adjustment);
     }
 
@@ -322,16 +293,6 @@ public class Player : MonoBehaviour
         player_Animation.SetBool("running", false);
         player_Animation.SetBool("jumping", true);
         is_Grounded = false;
-    }
-
-    private bool is_Crouching()
-    {
-        return Input.GetKey(KeyCode.C);
-    }
-
-    private void crouch()
-    {
-        main_Cam.transform.position = new Vector3(transform.position.x, (0.7f * Time.deltaTime) ,transform.position.z);
     }
 
 
@@ -439,11 +400,23 @@ public class Player : MonoBehaviour
     {
         walking_Speed = 8;
         running_Speed = 32;
+        hasSpeedBuff = true;
     }
 
     private void setBuffSpeedLow()
     {
         walking_Speed = 2;
         running_Speed = 6;
+        hasSpeedBuff = false;
+    }
+
+    internal Gun_Script giveActiveGun()
+    {
+        return my_Gun;
+    }
+
+    internal bool gotSpeedBuff()
+    {
+        return hasSpeedBuff;
     }
 }
