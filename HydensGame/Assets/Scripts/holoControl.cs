@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class holoControl : MonoBehaviour
+public class holoControl : MonoBehaviour, I_Shootable
 {
     enum Boss_State { Open, Closed, Opening, Closing }
 
@@ -12,6 +12,8 @@ public class holoControl : MonoBehaviour
 
     public Transform a, b;
     private float boss_Speed = 1f;
+    private int dmgTaken;
+    private BossScript my_Boss;
 
     void Start()
     {
@@ -65,5 +67,26 @@ public class holoControl : MonoBehaviour
         {
             currently = Boss_State.Closing;
         }
+    }
+
+    public void Ive_Been_Shot()
+    {
+        if (my_Boss.giveGameOn())
+        {
+            my_Boss.takeDmg(dmgTaken);
+        }
+        
+    }
+
+
+
+    internal void findDmg(int gunDmg)
+    {
+        dmgTaken = gunDmg;
+    }
+
+    internal void addBoss(BossScript boss)
+    {
+        my_Boss = boss;
     }
 }

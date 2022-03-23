@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class UI_Manager : MonoBehaviour
     bool hasBuff;
     public AudioClip reloadingClip;
     private AudioSource reloadingSource;
+    internal Manager my_Main_Manager;
+    TextMeshProUGUI damageText;
+    CanvasGroup dmgCG;
+    public GameObject operatorGroup_GO;
+    Text boostText;
 
 
     // Start is called before the first frame update
@@ -30,19 +36,25 @@ public class UI_Manager : MonoBehaviour
         my_Player = player.GetComponent<Player>();
         interact_Text = my_Text.GetComponent<Text>();
         ammo_Counter.text = ammo + "/" + ammo_Reserves;
-        buff = my_canvas.gameObject.transform.Find("Buff").GetComponentInChildren<Image>();
-        operator_Text = my_canvas.gameObject.transform.Find("Operator_Text").GetComponentInChildren<Text>();
-
+        buff = operatorGroup_GO.GetComponentInChildren<Image>();     
+        operator_Text = operatorGroup_GO.gameObject.transform.Find("Operator_Text").GetComponentInChildren<Text>();
         reloadingSource = gameObject.AddComponent<AudioSource>();
         reloadingSource.playOnAwake = false;
         reloadingSource.clip = reloadingClip;
         reloadingSource.Stop();
+        my_Main_Manager = GameObject.Find("Manager").GetComponent<Manager>();
+        boostText = my_canvas.gameObject.transform.Find("SpeedBuff").GetComponentInChildren<Text>(); 
+        damageText = my_canvas.gameObject.transform.Find("DamageNotifier").GetComponentInChildren<TextMeshProUGUI>();
+        damageText.enabled = false;
+        dmgCG = damageText.GetComponent<CanvasGroup>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
         interact_Text.enabled = false;
+        boostText.enabled = false;
 
         if (Input.GetMouseButtonDown(0) && is_Empty == false)
         {
@@ -82,6 +94,14 @@ public class UI_Manager : MonoBehaviour
             hasBuff = true;
         }
 
+        if(my_Main_Manager.gameOn == true)
+        {
+            damageText.enabled = true;
+        }
+        else
+        {
+            damageText.enabled = false;
+        }
 
         if (my_Player.playerInteract())
         {
@@ -91,5 +111,12 @@ public class UI_Manager : MonoBehaviour
         {
             interact_Text.enabled = false;
         }
+
+        if (my_Player.gotSpeedBuff())
+        {
+            boostText.enabled = true;
+        }
     }
+
+
 }

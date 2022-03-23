@@ -13,6 +13,7 @@ public class Gun_Script : MonoBehaviour
     private AudioSource gunShot;
     private float fireRate;
     private float fireTime;
+    private int dmg;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +32,6 @@ public class Gun_Script : MonoBehaviour
 
     internal void Shoot()
     {
-        print(fireTime);
 
         fireTime -= Time.deltaTime;
 
@@ -63,11 +63,12 @@ public class Gun_Script : MonoBehaviour
         
     }
 
-    internal void setup(Vector3 default_position,float fire_Time,float fire_Rate)
+    internal void setup(Vector3 default_position,float fire_Time,float fire_Rate, int gun_Dmg)
     {
         originalPosition = default_position;
         fireTime = fire_Time;
         fireRate = fire_Rate;
+        dmg = gun_Dmg;
     }
 
     internal void ADS()
@@ -78,6 +79,11 @@ public class Gun_Script : MonoBehaviour
     internal void noADS()
     {
         this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, originalPosition, (12 * Time.deltaTime));
+    }
+
+    internal int giveGunDmg()
+    {
+        return dmg;
     }
 
 }
