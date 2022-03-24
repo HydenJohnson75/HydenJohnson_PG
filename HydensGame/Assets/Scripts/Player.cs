@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     //Player Script
-    private int my_HP;
+    private float max_HP = 100;
+    private float current_HP;
     internal enum player_States { moving, idle, takingDmg, healing, dead };
     internal player_States my_State = player_States.idle;
     private float current_Speed;
@@ -30,6 +32,12 @@ public class Player : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private Rigidbody rb;
     private bool hasSpeedBuff;
+    private bool damaged = false;
+    private float startHealTimer = 3f;
+    private float waitHealTimer;
+    private float startChangeDmgedTimer = 2f;
+    private float waitChangeDmgedTimer;
+    private bool isHealing;
 
     private void Awake()
     {
@@ -39,7 +47,6 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        my_HP = 100;
         Cursor.lockState = CursorLockMode.Locked;
         current_Speed = walking_Speed;
         player_Animation = GetComponentInParent<Animator>();
@@ -55,6 +62,9 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         hasGun2 = false;
         hasSpeedBuff = false;
+        current_HP = max_HP;
+        waitHealTimer = startHealTimer;
+        waitChangeDmgedTimer = startChangeDmgedTimer;
     }
 
 
@@ -78,16 +88,60 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        print(current_HP);
 
+        if (damaged == true)
+        {
+            if(waitChangeDmgedTimer <= 0)
+            {
+                waitChangeDmgedTimer = startChangeDmgedTimer;
+                damaged = false;
+                isHealing = true;
+            }
+            else
+            {
+                waitChangeDmgedTimer -= Time.deltaTime;
+            }
+        }
+
+        if(damaged == false && current_HP <= max_HP)
+        {
+            
+            if(isHealing == true)
+            {
+                waitHealTimer -= Time.deltaTime;
+
+                if (waitHealTimer <= 0)
+                {
+                    current_HP += (5 * Time.deltaTime);
+
+                }
+            }
+            else
+            {
+                waitHealTimer = startHealTimer;
+                isHealing = false;
+            }
+            
+
+            
+        }
+
+        if(current_HP > max_HP)
+        {
+            current_HP = max_HP;
+        }
+
+        if(current_HP <= 0)
+        {
+            my_State = player_States.dead;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
         last_Position = transform.position;
         player_Animation.SetBool("walking_Forward", false);
         player_Animation.SetBool("running", false);
         player_Animation.SetBool("jumping", false);
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            my_HP -= 10;
-        }
 
         if (should_Move_Forward())
         {
@@ -191,10 +245,6 @@ public class Player : MonoBehaviour
             
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            navMeshAgent.enabled = true;
-        }
             
         if (Input.GetKeyDown(KeyCode.Alpha1) && my_Gun != my_Guns[0])
         {
@@ -418,5 +468,15 @@ public class Player : MonoBehaviour
     internal bool gotSpeedBuff()
     {
         return hasSpeedBuff;
+    }
+
+    internal void takeDmg(int damage)
+    {
+        current_HP -= damage;
+    }
+
+    internal void didITakeDmg(bool shot)
+    {
+        damaged = shot;
     }
 }
