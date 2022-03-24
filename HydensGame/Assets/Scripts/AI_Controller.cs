@@ -23,8 +23,14 @@ public class AI_Controller : MonoBehaviour,I_Shootable
     private Transform startPoint;
     private Transform[] movePoints;
     private int randomPoint;
-
-
+    public GameObject projectilePrefab;
+    private GameObject gun;
+    private GameObject barrel;
+    private GameObject rocket;
+    private AI_Projectile rocketScript;
+    float startTime = 1f;
+    float waitTime = 0;
+    internal Ray ray;
 
     // Start is called before the first frame update
     void Start()
@@ -32,16 +38,20 @@ public class AI_Controller : MonoBehaviour,I_Shootable
         enemy_HP = 100;
         ai_Animation = GetComponentInParent<Animator>();
         navMesh = GetComponent<NavMeshAgent>();
-        target = my_Manager.givePlayerTransform();
+        target = my_Manager.player.transform;
         startPoint = my_Manager.giveStartPoint(this);
         movePoints = my_Manager.giveMovePoints(this);
         randomPoint = UnityEngine.Random.Range(0, movePoints.Length);
         current_State = ai_State.StartingPatrol;
+        gun = this.gameObject.transform.Find("AssaultRifle").gameObject;
+        barrel = gun.gameObject.transform.Find("BarrelPoint").gameObject;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        barrel.transform.LookAt(target);
         float distanceTo = Vector3.Distance(transform.position, target.position);
 
         if(distanceTo <= follow_Radius && distanceTo >= attack_Radius && current_State != ai_State.Dead)
@@ -126,12 +136,27 @@ public class AI_Controller : MonoBehaviour,I_Shootable
             case ai_State.Attacking:
 
                 attackPlayer();
+                if (shoot())
+                {
+                    
+                    if (waitTime <= 0)
+                    {
+                        rocket = Instantiate(projectilePrefab, barrel.transform.position, Quaternion.identity) as GameObject;
+                        waitTime = startTime;
+                        rocketScript = rocket.GetComponent<AI_Projectile>();
+                        rocketScript.getRayLocation(ray);
+                    }
+                    else
+                    {
+                        waitTime -= Time.deltaTime;
+                    }
+                }
 
                 break;
 
         }
 
-        
+
     }
 
     private void ai_Idle()
@@ -213,7 +238,34 @@ public class AI_Controller : MonoBehaviour,I_Shootable
         ai_Animation.SetBool("is_Dead", false);
         ai_Animation.SetBool("is_Attacking", true);
         navMesh.isStopped = true;
+    }
 
+    internal bool shoot()
+    {
+        bool playerShot = false;
+
+        ray = new Ray(barrel.transform.position, barrel.transform.forward);
+
+
+        RaycastHit info;
+
+        if (Physics.Raycast(ray, out info))
+        {
+            Player target = info.transform.GetComponent<Player>();
+            if (target != null)
+            {
+                playerShot = true;
+            }
+            else
+            {
+                playerShot = false;
+            }
+        }
+
+
+        Debug.DrawRay(barrel.transform.position, barrel.transform.forward * 10f, Color.green);
+
+        return playerShot;
     }
 
 }
