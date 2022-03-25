@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -24,11 +23,11 @@ public class Player : MonoBehaviour
     focal_Point my_Focal_Point;
     private bool is_Grounded = true;
     Vector3 last_Position;
-    List<Gun_Script> my_Guns;
+    public List<Gun_Script> my_Guns;
     internal Gun_Script my_Gun;
     bool hasBuff;
     bool isInteracting = false;
-    bool hasGun2;
+    public bool hasGun2;
     private NavMeshAgent navMeshAgent;
     private Rigidbody rb;
     private bool hasSpeedBuff;
@@ -71,8 +70,8 @@ public class Player : MonoBehaviour
 
     private void setup_guns(List<Gun_Script> my_guns)
     {
-        my_guns[0].setup(new Vector3(0.0829f, -0.067f, 0.238f),0,0,2);
-        my_guns[1].setup( new Vector3(0.100f, -0.064f, 0.133f),0.1f,0.2f,5);
+        my_guns[0].setup(new Vector3(0.0829f, -0.067f, 0.238f),0,0,2,10,10);
+        my_guns[1].setup( new Vector3(0.100f, -0.064f, 0.133f),0.1f,0.2f,10,25,25);
 
     }
 
@@ -88,7 +87,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(current_HP);
 
         if (damaged == true)
         {
@@ -135,9 +133,9 @@ public class Player : MonoBehaviour
         if(current_HP <= 0)
         {
             my_State = player_States.dead;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
-        last_Position = transform.position;
+
+
         player_Animation.SetBool("walking_Forward", false);
         player_Animation.SetBool("running", false);
         player_Animation.SetBool("jumping", false);
@@ -218,12 +216,18 @@ public class Player : MonoBehaviour
 
         if (my_Gun == my_Guns[0] && Input.GetMouseButtonDown(0))
         {
-            //Shoot();
+            if (!my_Gun.giveIsEmpty())
+            {
+                Shoot();
+            }
         }
-        
-        if(my_Gun == my_Guns[1] && Input.GetMouseButton(0))
+
+        if (my_Gun == my_Guns[1] && Input.GetMouseButton(0))
         {
-            Shoot();
+            if (!my_Gun.giveIsEmpty())
+            {
+                Shoot();
+            }
         }
 
         if (Input.GetMouseButton(1))
@@ -240,9 +244,7 @@ public class Player : MonoBehaviour
         if (jumped() && is_Grounded == true)
         {
             jump();
-
-            
-            
+  
         }
 
             
@@ -383,10 +385,6 @@ public class Player : MonoBehaviour
 
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        
-    }
 
     public void Shoot()
     {
@@ -408,26 +406,6 @@ public class Player : MonoBehaviour
         return hasBuff;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.name == "Start")
-        {
-            isInteracting = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.name == "Start")
-        {
-            isInteracting = false;
-        }
-    }
-
-    internal bool playerInteract()
-    {
-        return isInteracting;
-    }
 
 
     internal bool jumpTimer()
@@ -478,5 +456,15 @@ public class Player : MonoBehaviour
     internal void didITakeDmg(bool shot)
     {
         damaged = shot;
+    }
+
+    internal float giveCurrentHP()
+    {
+        return current_HP;
+    }
+
+    internal float giveMaxHp()
+    {
+        return max_HP;
     }
 }

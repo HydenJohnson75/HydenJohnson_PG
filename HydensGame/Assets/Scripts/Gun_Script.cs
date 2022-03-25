@@ -14,6 +14,9 @@ public class Gun_Script : MonoBehaviour
     private float fireRate;
     private float fireTime;
     private int dmg;
+    internal int maxAmmo;
+    internal int currentAmmo;
+    private bool isEmpty = false;
 
     // Start is called before the first frame update
     void Start()
@@ -22,11 +25,23 @@ public class Gun_Script : MonoBehaviour
         gunShot.playOnAwake = false;
         gunShot.clip = gunAudio;
         gunShot.Stop();
+        currentAmmo = maxAmmo;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(currentAmmo <= 0)
+        {
+            isEmpty = true;
+        }
+
+        if(isEmpty && Input.GetKeyDown(KeyCode.R)) 
+        {
+            currentAmmo = maxAmmo;
+            isEmpty = false;
+        }
+
 
     }
 
@@ -57,18 +72,22 @@ public class Gun_Script : MonoBehaviour
 
             Debug.DrawRay(this.transform.position + (Vector3.up * 0.03f), Camera.main.transform.forward * 10f, Color.green);
 
+            currentAmmo--;
+
             fireTime = fireRate;
         }
         
         
     }
 
-    internal void setup(Vector3 default_position,float fire_Time,float fire_Rate, int gun_Dmg)
+    internal void setup(Vector3 default_position,float fire_Time,float fire_Rate, int gun_Dmg,int max_Ammo,int current_Ammo)
     {
         originalPosition = default_position;
         fireTime = fire_Time;
         fireRate = fire_Rate;
         dmg = gun_Dmg;
+        maxAmmo = max_Ammo;
+        currentAmmo = current_Ammo;
     }
 
     internal void ADS()
@@ -86,4 +105,13 @@ public class Gun_Script : MonoBehaviour
         return dmg;
     }
 
+    internal bool giveIsEmpty()
+    {
+        return isEmpty;
+    }
+
+    internal int giveCurrentAmmo()
+    {
+        return currentAmmo;
+    }
 }

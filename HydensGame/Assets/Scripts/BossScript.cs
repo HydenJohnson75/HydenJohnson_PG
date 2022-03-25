@@ -51,5 +51,10 @@ public class BossScript : MonoBehaviour, I_Shootable
     {
         hp -= dmg;
     }
+
+    internal int giveHP()
+    {
+        return hp;
+    }
     
 }

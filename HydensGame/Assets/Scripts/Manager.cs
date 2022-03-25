@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class Manager : MonoBehaviour
@@ -31,7 +32,8 @@ public class Manager : MonoBehaviour
     public Transform[] movePoints2;
     private Gun_Script playersActiveGun;
     internal UI_Manager ui_Manager;
-
+    bool isPlayerDead;
+    bool isBossDead;
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +57,7 @@ public class Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(generatingInitialMobs)
+        if (generatingInitialMobs)
         {
             if (waitTime <= 0)
             {
@@ -73,7 +75,35 @@ public class Manager : MonoBehaviour
             }
         }
 
+        if(my_Player.giveCurrentHP() <= 0)
+        {
+            isPlayerDead = true;
+        }
+        else
+        {
+            isPlayerDead = false;
+        }
 
+
+        if (isPlayerDead)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+
+        if(my_Boss.giveHP() <= 0)
+        {
+            isBossDead = true;
+        }
+
+        else
+        {
+            isBossDead = false;
+        }
+
+        if(isBossDead == true)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        }
 
         findPlayerGun(my_Player.giveActiveGun());
         
@@ -92,10 +122,6 @@ public class Manager : MonoBehaviour
             panel_Mat.SetColor("_EmissionColor", Color.red);
         }
 
-        if(my_Player.playerInteract() && Input.GetKeyDown(KeyCode.E))
-        {
-            gameOn = true;
-        }
 
         if (gameOn)
         {
@@ -214,7 +240,5 @@ public class Manager : MonoBehaviour
     {
         gameOn = allShot;
     }
-
-
 
 }
