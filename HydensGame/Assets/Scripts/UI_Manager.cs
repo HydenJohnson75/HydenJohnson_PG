@@ -6,8 +6,7 @@ using TMPro;
 
 public class UI_Manager : MonoBehaviour
 {
-    private int ammo = 10;
-    private int ammo_Reserves = 200;
+
     Canvas my_canvas;
     Text ammo_Counter;
     GameObject my_Text;
@@ -16,7 +15,6 @@ public class UI_Manager : MonoBehaviour
     Player my_Player;
     Image buff;
     Text operator_Text;
-    bool is_Empty = false;
     bool hasBuff;
     public AudioClip reloadingClip;
     private AudioSource reloadingSource;
@@ -25,7 +23,12 @@ public class UI_Manager : MonoBehaviour
     CanvasGroup dmgCG;
     public GameObject operatorGroup_GO;
     Text boostText;
-
+    public GameObject pistolImg;
+    public GameObject arImg;
+    private CanvasGroup pistolCG;
+    private CanvasGroup arCG;
+    private Gun_Script activeGun;
+    public Slider hpSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +38,6 @@ public class UI_Manager : MonoBehaviour
         my_Text = GameObject.FindGameObjectWithTag("Interact");
         my_Player = player.GetComponent<Player>();
         interact_Text = my_Text.GetComponent<Text>();
-        ammo_Counter.text = ammo + "/" + ammo_Reserves;
         buff = operatorGroup_GO.GetComponentInChildren<Image>();     
         operator_Text = operatorGroup_GO.gameObject.transform.Find("Operator_Text").GetComponentInChildren<Text>();
         reloadingSource = gameObject.AddComponent<AudioSource>();
@@ -47,7 +49,11 @@ public class UI_Manager : MonoBehaviour
         damageText = my_canvas.gameObject.transform.Find("DamageNotifier").GetComponentInChildren<TextMeshProUGUI>();
         damageText.enabled = false;
         dmgCG = damageText.GetComponent<CanvasGroup>();
-
+        arImg.SetActive(false);
+        pistolCG = pistolImg.GetComponent<CanvasGroup>();
+        arCG = arImg.GetComponent<CanvasGroup>();
+        activeGun = my_Player.giveActiveGun();
+        hpSlider.value = my_Player.giveMaxHp();
     }
 
     // Update is called once per frame
@@ -55,28 +61,28 @@ public class UI_Manager : MonoBehaviour
     {
         interact_Text.enabled = false;
         boostText.enabled = false;
+        activeGun = my_Player.giveActiveGun();
 
-        if (Input.GetMouseButtonDown(0) && is_Empty == false)
+        hpSlider.value = my_Player.giveCurrentHP();
+
+        if (my_Player.hasGun2)
         {
-            ammo--;
-            my_Player.Shoot();
+            arImg.SetActive(true);
         }
 
-        ammo_Counter.text = ammo.ToString();
-
-        if(ammo <= 0)
+        if(my_Player.giveActiveGun() == my_Player.my_Guns[0])
         {
-            is_Empty = true;
+            arCG.alpha = 0.22f;
+            pistolCG.alpha = 1f;
+        }
+        if(my_Player.giveActiveGun() == my_Player.my_Guns[1])
+        {
+            pistolCG.alpha = 0.22f;
+            arCG.alpha = 1f;
         }
 
-        if (is_Empty)
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                ammo = 10;
-                is_Empty = false;
-            }
-        }
+        ammo_Counter.text = activeGun.currentAmmo.ToString();
+
 
         if(hasBuff == false)
         {
@@ -103,19 +109,15 @@ public class UI_Manager : MonoBehaviour
             damageText.enabled = false;
         }
 
-        if (my_Player.playerInteract())
-        {
-            interact_Text.enabled = true;
-        }
-        else if(my_Player.playerInteract() == false)
-        {
-            interact_Text.enabled = false;
-        }
 
         if (my_Player.gotSpeedBuff())
         {
             boostText.enabled = true;
         }
+
+        
+        
+
     }
 
 

@@ -31,11 +31,12 @@ public class AI_Controller : MonoBehaviour,I_Shootable
     float startTime = 1f;
     float waitTime = 0;
     internal Ray ray;
+    private Gun_Script playerGun;
 
     // Start is called before the first frame update
     void Start()
     {
-        enemy_HP = 100;
+        enemy_HP = 10;
         ai_Animation = GetComponentInParent<Animator>();
         navMesh = GetComponent<NavMeshAgent>();
         target = my_Manager.player.transform;
@@ -93,6 +94,7 @@ public class AI_Controller : MonoBehaviour,I_Shootable
             current_State = ai_State.Dead;
         }
 
+        playerGun = my_Manager.givePlayerGun();
 
         switch (current_State)
         {
@@ -175,7 +177,7 @@ public class AI_Controller : MonoBehaviour,I_Shootable
 
     public void Ive_Been_Shot()
     {
-        enemy_HP -= 20;
+        enemy_HP -= playerGun.giveGunDmg();
     }
 
     internal void killAI()

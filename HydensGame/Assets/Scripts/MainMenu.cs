@@ -6,7 +6,8 @@ public class MainMenu : MonoBehaviour
 {
     public AudioClip preEncounterClip;
     private AudioSource preEncounterSource;
-
+    public Canvas startCanvas;
+    public Canvas lastCanvas;
     public void Start()
     {
         preEncounterSource = gameObject.AddComponent<AudioSource>();
@@ -15,9 +16,16 @@ public class MainMenu : MonoBehaviour
         preEncounterSource.volume = 0.5f;
         preEncounterSource.loop = true;
         preEncounterSource.Play();
+        lastCanvas.gameObject.SetActive(false);
     }
 
     public void PlayGame()
+    {
+        startCanvas.gameObject.SetActive(false);
+        lastCanvas.gameObject.SetActive(true);
+    }
+
+    public void ContinueGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }

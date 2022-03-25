@@ -6,12 +6,14 @@ public class AI_Projectile : MonoBehaviour
 {
     private int damage = 10;
     Ray my_Ray;
+    float startDestroyTime = 3f;
+    float waitDestroyTime;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        waitDestroyTime = startDestroyTime;
         
     }
 
@@ -20,6 +22,15 @@ public class AI_Projectile : MonoBehaviour
     {
 
         transform.position += my_Ray.direction* (10*Time.deltaTime);
+        if (waitDestroyTime <= 0)
+        {
+            waitDestroyTime = startDestroyTime;
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            waitDestroyTime -= Time.deltaTime;
+        }
 
     }
 
