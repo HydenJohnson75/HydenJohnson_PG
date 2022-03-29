@@ -5,7 +5,8 @@ using UnityEngine;
 public class BossScript : MonoBehaviour, I_Shootable
 {
     Manager my_Man;
-    private int hp = 200;
+    private int maxHp = 200;
+    private int currentHp;
     private Gun_Script playersActiveGun;
 
     public void Ive_Been_Shot()
@@ -21,6 +22,8 @@ public class BossScript : MonoBehaviour, I_Shootable
         {
             h.addBoss(this);
         }
+
+        currentHp = maxHp;
     }
 
     // Update is called once per frame
@@ -28,9 +31,9 @@ public class BossScript : MonoBehaviour, I_Shootable
     {
         playersActiveGun = my_Man.givePlayerGun();
 
-        print(hp);
+        print(currentHp);
 
-        if(hp <= 0)
+        if(currentHp <= 0)
         {
             print("boss dead");
         }
@@ -49,12 +52,16 @@ public class BossScript : MonoBehaviour, I_Shootable
 
     internal void takeDmg(int dmg)
     {
-        hp -= dmg;
+        currentHp -= dmg;
     }
 
     internal int giveHP()
     {
-        return hp;
+        return currentHp;
     }
     
+    internal int giveMaxHP()
+    {
+        return maxHp;
+    }
 }

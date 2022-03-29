@@ -16,6 +16,9 @@ public class Manager : MonoBehaviour
     Renderer panel_Render;
     Material panel_Mat;
     GameObject colorChange;
+    Renderer panel_Render2;
+    Material panel_Mat2;
+    GameObject colorChange2;
     internal bool gameOn;
     float timer = 20;
     public GameObject boss;
@@ -46,6 +49,10 @@ public class Manager : MonoBehaviour
         panel_Render = colorChange.GetComponent<Renderer>();
         panel_Mat = panel_Render.GetComponent<Renderer>().material;
         panel_Mat.EnableKeyword("_EmissionColor");
+        colorChange2 = GameObject.Find("Gate Access Machine (2)");
+        panel_Render2 = colorChange2.GetComponent<Renderer>();
+        panel_Mat2 = panel_Render2.GetComponent<Renderer>().material;
+        panel_Mat2.EnableKeyword("_EmissionColor");
         my_Boss = boss.GetComponent<BossScript>();
         all_Enemies = new List<AI_Controller>();
         gameOn = false;
@@ -112,7 +119,7 @@ public class Manager : MonoBehaviour
             f.findDmg(playersActiveGun.giveGunDmg());
         }
 
-        if (cMM.currentNumberCheck() == 1234)
+        if (cMM.currentNumberCheck() == 4695)
         {
             my_SecretDoor.open_Door();
         }
@@ -120,6 +127,7 @@ public class Manager : MonoBehaviour
         if (my_Player.gotBuff())
         {
             panel_Mat.SetColor("_EmissionColor", Color.red);
+            panel_Mat2.SetColor("_EmissionColor", Color.red);
         }
 
 
