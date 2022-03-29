@@ -17,6 +17,13 @@ public class Gun_Script : MonoBehaviour
     internal int maxAmmo;
     internal int currentAmmo;
     private bool isEmpty = false;
+    private bool isFiring = false;
+
+
+    private void Awake()
+    {
+        muzzleFlash.enableEmission = false;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -26,12 +33,53 @@ public class Gun_Script : MonoBehaviour
         gunShot.clip = gunAudio;
         gunShot.Stop();
         currentAmmo = maxAmmo;
+        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(currentAmmo <= 0)
+        if (isFiring)
+        {
+            fireTime -= Time.deltaTime;
+            muzzleFlash.enableEmission = true;
+            if (fireTime <= 0)
+            {
+                
+                Ray gun_Ray = new Ray(this.transform.position + (Vector3.up * 0.02f), Camera.main.transform.forward);
+
+                gunShot.Play();
+
+                muzzleFlash.Play();
+
+                RaycastHit info;
+
+                if (Physics.Raycast(gun_Ray, out info))
+                {
+                    I_Shootable target = info.transform.GetComponent<I_Shootable>();
+                    if (target != null)
+                    {
+                        target.Ive_Been_Shot();
+                    }
+                }
+
+                Debug.DrawRay(this.transform.position + (Vector3.up * 0.03f), Camera.main.transform.forward * 10f, Color.green);
+
+                currentAmmo--;
+
+                fireTime = fireRate;
+            }
+            else
+            {
+                muzzleFlash.enableEmission = false;
+            }
+        }
+
+        isFiring = false;
+
+
+        if (currentAmmo <= 0)
         {
             isEmpty = true;
         }
@@ -47,37 +95,7 @@ public class Gun_Script : MonoBehaviour
 
     internal void Shoot()
     {
-
-        fireTime -= Time.deltaTime;
-
-        if (fireTime <= 0)
-        {
-                     
-            Ray gun_Ray = new Ray(this.transform.position + (Vector3.up * 0.02f), Camera.main.transform.forward);
-
-            gunShot.Play();
-
-            muzzleFlash.Play();
-
-            RaycastHit info;
-
-            if (Physics.Raycast(gun_Ray, out info))
-            {
-                I_Shootable target = info.transform.GetComponent<I_Shootable>();
-                if (target != null)
-                {
-                    target.Ive_Been_Shot();
-                }
-            }
-
-            Debug.DrawRay(this.transform.position + (Vector3.up * 0.03f), Camera.main.transform.forward * 10f, Color.green);
-
-            currentAmmo--;
-
-            fireTime = fireRate;
-        }
-        
-        
+        isFiring = true;
     }
 
     internal void setup(Vector3 default_position,float fire_Time,float fire_Rate, int gun_Dmg,int max_Ammo,int current_Ammo)
