@@ -689,7 +689,7 @@ GameObject:
   - component: {fileID: 1762032030}
   - component: {fileID: 1762032029}
   m_Layer: 0
-  m_Name: PlayButton
+  m_Name: MenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1230,9 +1230,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1394842948}
-        m_TargetAssemblyTypeName: DeathMenu, Assembly-CSharp
-        m_MethodName: PlayGame
+      - m_Target: {fileID: 823675810}
+        m_TargetAssemblyTypeName: VictoryMenu, Assembly-CSharp
+        m_MethodName: Quit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

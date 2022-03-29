@@ -239,6 +239,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1) && my_Gun != my_Guns[0])
         {
             my_Gun = activate_gun(0);
+            my_Gun.muzzleFlash.enableEmission = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -246,9 +247,11 @@ public class Player : MonoBehaviour
             if (hasGun2 && my_Gun != my_Guns[1])
             {
                 my_Gun = activate_gun(1);
+                my_Gun.muzzleFlash.enableEmission = false;
             }
             
         }
+
     }
 
     private bool isRunning()

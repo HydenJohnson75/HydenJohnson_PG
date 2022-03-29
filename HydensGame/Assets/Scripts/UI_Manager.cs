@@ -29,6 +29,10 @@ public class UI_Manager : MonoBehaviour
     private CanvasGroup arCG;
     private Gun_Script activeGun;
     public Slider hpSlider;
+    public Slider bossHpSlider;
+    public GameObject boss;
+    BossScript my_Boss;
+    public GameObject bossHPBar;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +58,9 @@ public class UI_Manager : MonoBehaviour
         arCG = arImg.GetComponent<CanvasGroup>();
         activeGun = my_Player.giveActiveGun();
         hpSlider.value = my_Player.giveMaxHp();
+        my_Boss = boss.GetComponent<BossScript>();
+        bossHpSlider.value = my_Boss.giveMaxHP();
+        bossHPBar.SetActive(false);
     }
 
     // Update is called once per frame
@@ -64,6 +71,7 @@ public class UI_Manager : MonoBehaviour
         activeGun = my_Player.giveActiveGun();
 
         hpSlider.value = my_Player.giveCurrentHP();
+        bossHpSlider.value = my_Boss.giveHP();
 
         if (my_Player.hasGun2)
         {
@@ -103,6 +111,7 @@ public class UI_Manager : MonoBehaviour
         if(my_Main_Manager.gameOn == true)
         {
             damageText.enabled = true;
+            bossHPBar.SetActive(true);
         }
         else
         {
