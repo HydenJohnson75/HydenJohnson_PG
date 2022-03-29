@@ -176,23 +176,6 @@ public class Player : MonoBehaviour
         }
 
 
-        
-
-        if (transform.position.y < 1.42f)
-        {
-            is_Grounded = true;
-            if(rb.velocity.y < 0)
-            {
-                navMeshAgent.enabled = true;
-            }
-             
-        }
-        else
-        {
-            is_Grounded = false;
-        }
-
-
         if (Input.GetKeyDown(KeyCode.E))
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position + 0.7f * Vector3.up + 0.5f * transform.forward, 0.5f);
@@ -240,14 +223,19 @@ public class Player : MonoBehaviour
         }
 
 
-
-        if (jumped() && is_Grounded == true)
-        {
-            jump();
+        //if (jumped() && is_Grounded == true)
+        //{
+        //    jump();
   
-        }
+        //}
 
-            
+        //if (rb.velocity.y < 0)
+        //{
+        //    is_Grounded = true;
+        //    navMeshAgent.enabled = true;
+        //}
+
+
         if (Input.GetKeyDown(KeyCode.Alpha1) && my_Gun != my_Guns[0])
         {
             my_Gun = activate_gun(0);
@@ -332,20 +320,20 @@ public class Player : MonoBehaviour
         return Input.GetKey(KeyCode.W);
     }
     
-    private bool jumped()
-    {
-        return Input.GetKeyDown(KeyCode.Space);
-    }
+    //private bool jumped()
+    //{
+    //    return Input.GetKeyDown(KeyCode.Space);
+    //}
 
-    private void jump()
-    {
-        navMeshAgent.enabled = false;
-        GetComponent<Rigidbody>().AddForce(transform.TransformDirection(Vector3.up) * 300);
-        player_Animation.SetBool("walking_Forward", false);
-        player_Animation.SetBool("running", false);
-        player_Animation.SetBool("jumping", true);
-        is_Grounded = false;
-    }
+    //private void jump()
+    //{
+    //    navMeshAgent.enabled = false;
+    //    rb.AddForce(transform.TransformDirection(Vector3.up) * 300);
+    //    player_Animation.SetBool("walking_Forward", false);
+    //    player_Animation.SetBool("running", false);
+    //    player_Animation.SetBool("jumping", true);
+    //    is_Grounded = false;
+    //}
 
 
     private void OnCollisionEnter(Collision collision)
