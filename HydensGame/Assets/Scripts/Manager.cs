@@ -37,6 +37,7 @@ public class Manager : MonoBehaviour
     internal UI_Manager ui_Manager;
     bool isPlayerDead;
     bool isBossDead;
+    bool gameIsPaused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -64,6 +65,24 @@ public class Manager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameIsPaused = !gameIsPaused;
+        }
+
+        if (gameIsPaused)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+
+            Cursor.lockState = CursorLockMode.Locked;
+
+            Cursor.visible = false;
+        }
+
         if (generatingInitialMobs)
         {
             if (waitTime <= 0)
@@ -247,6 +266,11 @@ public class Manager : MonoBehaviour
     internal void setGameOn(bool allShot)
     {
         gameOn = allShot;
+    }
+
+    internal bool giveisGamePaused()
+    {
+        return gameIsPaused;
     }
 
 }

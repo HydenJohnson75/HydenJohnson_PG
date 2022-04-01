@@ -35416,6 +35416,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4740370999217394345, guid: 651b8f9ac7026fa418f39946aac62691,
+        type: 3}
+      propertyPath: my_ManGO
+      value: 
+      objectReference: {fileID: 903888069}
     - target: {fileID: 6631313184541106032, guid: 651b8f9ac7026fa418f39946aac62691,
         type: 3}
       propertyPath: muzzleFlash

@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
     private float startChangeDmgedTimer = 2f;
     private float waitChangeDmgedTimer;
     private bool isHealing;
+    private Manager my_Man;
+    public GameObject my_ManGO;
 
     private void Awake()
     {
@@ -64,6 +66,7 @@ public class Player : MonoBehaviour
         current_HP = max_HP;
         waitHealTimer = startHealTimer;
         waitChangeDmgedTimer = startChangeDmgedTimer;
+        my_Man = my_ManGO.GetComponent<Manager>();
     }
 
 
@@ -87,170 +90,177 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (damaged == true)
+        if (!my_Man.giveisGamePaused())
         {
-            if(waitChangeDmgedTimer <= 0)
+            if (damaged == true)
             {
-                waitChangeDmgedTimer = startChangeDmgedTimer;
-                damaged = false;
-                isHealing = true;
-            }
-            else
-            {
-                waitChangeDmgedTimer -= Time.deltaTime;
-            }
-        }
-
-        if(damaged == false && current_HP <= max_HP)
-        {
-            
-            if(isHealing == true)
-            {
-                waitHealTimer -= Time.deltaTime;
-
-                if (waitHealTimer <= 0)
+                if (waitChangeDmgedTimer <= 0)
                 {
-                    current_HP += (5 * Time.deltaTime);
-
-                }
-            }
-            else
-            {
-                waitHealTimer = startHealTimer;
-                isHealing = false;
-            }
-            
-
-            
-        }
-
-        if(current_HP > max_HP)
-        {
-            current_HP = max_HP;
-        }
-
-        if(current_HP <= 0)
-        {
-            my_State = player_States.dead;
-        }
-
-
-        player_Animation.SetBool("walking_Forward", false);
-        player_Animation.SetBool("running", false);
-        player_Animation.SetBool("jumping", false);
-
-
-        if (should_Move_Forward())
-        {
-            move_Forward();
-        }
-
-
-        if (should_Move_Backward())
-        {
-            move_Backward();
-        }
-
-        if (should_Strafe_Left())
-        {
-            strafe_Left();
-        }
-
-        if (should_Strafe_Right())
-        {
-            strafe_Right();
-        }
-
-
-        turn(Input.GetAxis("Horizontal"));
-        adjust_Camera(Input.GetAxis("Vertical"));
-
-        if (isRunning())
-        {
-            current_Speed = run(current_Speed);
-        }
-        else
-        {
-            current_Speed = walking_Speed;
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Collider[] colliders = Physics.OverlapSphere(transform.position + 0.7f * Vector3.up + 0.5f * transform.forward, 0.5f);
-
-
-            foreach (Collider c in colliders)
-            {
-                I_Interactable Interact_Script = c.GetComponent<I_Interactable>();
-                if (Interact_Script != null)
-                {
-                    Interact_Script.Interact();
+                    waitChangeDmgedTimer = startChangeDmgedTimer;
+                    damaged = false;
+                    isHealing = true;
                 }
                 else
                 {
+                    waitChangeDmgedTimer -= Time.deltaTime;
+                }
+            }
+
+            if (damaged == false && current_HP <= max_HP)
+            {
+
+                if (isHealing == true)
+                {
+                    waitHealTimer -= Time.deltaTime;
+
+                    if (waitHealTimer <= 0)
+                    {
+                        current_HP += (5 * Time.deltaTime);
+
+                    }
+                }
+                else
+                {
+                    waitHealTimer = startHealTimer;
+                    isHealing = false;
+                }
+
+
+
+            }
+
+            if (current_HP > max_HP)
+            {
+                current_HP = max_HP;
+            }
+
+            if (current_HP <= 0)
+            {
+                my_State = player_States.dead;
+            }
+
+
+            player_Animation.SetBool("walking_Forward", false);
+            player_Animation.SetBool("running", false);
+            player_Animation.SetBool("jumping", false);
+
+
+            if (should_Move_Forward())
+            {
+                move_Forward();
+            }
+
+
+            if (should_Move_Backward())
+            {
+                move_Backward();
+            }
+
+            if (should_Strafe_Left())
+            {
+                strafe_Left();
+            }
+
+            if (should_Strafe_Right())
+            {
+                strafe_Right();
+            }
+
+
+            turn(Input.GetAxis("Horizontal"));
+            adjust_Camera(Input.GetAxis("Vertical"));
+
+            if (isRunning())
+            {
+                current_Speed = run(current_Speed);
+            }
+            else
+            {
+                current_Speed = walking_Speed;
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Collider[] colliders = Physics.OverlapSphere(transform.position + 0.7f * Vector3.up + 0.5f * transform.forward, 0.5f);
+
+
+                foreach (Collider c in colliders)
+                {
+                    I_Interactable Interact_Script = c.GetComponent<I_Interactable>();
+                    if (Interact_Script != null)
+                    {
+                        Interact_Script.Interact();
+                    }
+                    else
+                    {
+
+                    }
 
                 }
 
             }
 
-        }
-
-        if (my_Gun == my_Guns[0] && Input.GetMouseButtonDown(0))
-        {
-            if (!my_Gun.giveIsEmpty())
+            if (my_Gun == my_Guns[0] && Input.GetMouseButtonDown(0))
             {
-                Shoot();
+                if (!my_Gun.giveIsEmpty())
+                {
+                    Shoot();
+                }
             }
-        }
 
-        if (my_Gun == my_Guns[1] && Input.GetMouseButton(0))
-        {
-            if (!my_Gun.giveIsEmpty())
+            if (my_Gun == my_Guns[1] && Input.GetMouseButton(0))
             {
-                Shoot();
+                if (!my_Gun.giveIsEmpty())
+                {
+                    Shoot();
+                }
             }
-        }
 
-        if (Input.GetMouseButton(1))
-        {
-            ADS();
+            if (Input.GetMouseButton(1))
+            {
+                ADS();
+            }
+            else
+            {
+                noADS();
+            }
+
+
+            //if (jumped() && is_Grounded == true)
+            //{
+            //    jump();
+
+            //}
+
+            //if (rb.velocity.y < 0)
+            //{
+            //    is_Grounded = true;
+            //    navMeshAgent.enabled = true;
+            //}
+
+
+            if (Input.GetKeyDown(KeyCode.Alpha1) && my_Gun != my_Guns[0])
+            {
+                my_Gun = activate_gun(0);
+                my_Gun.muzzleFlash.enableEmission = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (hasGun2 && my_Gun != my_Guns[1])
+                {
+                    my_Gun = activate_gun(1);
+                    my_Gun.muzzleFlash.enableEmission = false;
+                }
+
+            }
         }
         else
         {
-            noADS();
+
         }
-
-
-        //if (jumped() && is_Grounded == true)
-        //{
-        //    jump();
-  
-        //}
-
-        //if (rb.velocity.y < 0)
-        //{
-        //    is_Grounded = true;
-        //    navMeshAgent.enabled = true;
-        //}
-
-
-        if (Input.GetKeyDown(KeyCode.Alpha1) && my_Gun != my_Guns[0])
-        {
-            my_Gun = activate_gun(0);
-            my_Gun.muzzleFlash.enableEmission = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (hasGun2 && my_Gun != my_Guns[1])
-            {
-                my_Gun = activate_gun(1);
-                my_Gun.muzzleFlash.enableEmission = false;
-            }
-            
-        }
+        
 
     }
 
