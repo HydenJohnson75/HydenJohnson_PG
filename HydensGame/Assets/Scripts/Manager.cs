@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,11 +38,15 @@ public class Manager : MonoBehaviour
     internal UI_Manager ui_Manager;
     bool isPlayerDead;
     bool isBossDead;
-    bool gameIsPaused = false;
+    public GameObject ui_Manager_GO;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = -1;
+        QualitySettings.vSyncCount = 0;
+        
         all_holos = FindObjectsOfType<holoControl>();
         cMM = FindObjectOfType<Code_Machine_Manager>();
         my_SecretDoor = secretDoor.GetComponent<Open_Secret_Door>();
@@ -59,29 +64,13 @@ public class Manager : MonoBehaviour
         gameOn = false;
         waitTime = startWaitTime;
         my_Boss.addManager(this);
-        ui_Manager = GameObject.Find("UIManager").GetComponent<UI_Manager>();
+        ui_Manager = ui_Manager_GO.GetComponent<UI_Manager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            gameIsPaused = !gameIsPaused;
-        }
 
-        if (gameIsPaused)
-        {
-            Time.timeScale = 0;
-        }
-        else
-        {
-            Time.timeScale = 1;
-
-            Cursor.lockState = CursorLockMode.Locked;
-
-            Cursor.visible = false;
-        }
 
         if (generatingInitialMobs)
         {
@@ -169,6 +158,7 @@ public class Manager : MonoBehaviour
 
         print(playersActiveGun.gameObject);
     }
+
 
     internal bool playerHasBuff()
     {
@@ -268,9 +258,6 @@ public class Manager : MonoBehaviour
         gameOn = allShot;
     }
 
-    internal bool giveisGamePaused()
-    {
-        return gameIsPaused;
-    }
+
 
 }

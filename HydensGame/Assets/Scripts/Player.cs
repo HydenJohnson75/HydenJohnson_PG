@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     private float current_Speed;
     private float walking_Speed = 2f;
     private float running_Speed = 6f;
-    private float mouse_Sensitivity_X = 20f;
+    public static float mouse_Sensitivity_X = 20f;
     Animator player_Animation;
     Camera player_Camera;
     GameObject main_Cam;
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!my_Man.giveisGamePaused())
+        if (!PauseMenu_Script.gameIsPaused)
         {
             if (damaged == true)
             {
@@ -255,12 +255,15 @@ public class Player : MonoBehaviour
                 }
 
             }
+
+            print(mouse_Sensitivity_X);
         }
         else
         {
 
         }
-        
+            
+
 
     }
 
@@ -467,5 +470,10 @@ public class Player : MonoBehaviour
     internal float giveMaxHp()
     {
         return max_HP;
+    }
+
+    public void AdjustCameraSensitivity(float newSpeed)
+    {
+        mouse_Sensitivity_X = newSpeed;
     }
 }
