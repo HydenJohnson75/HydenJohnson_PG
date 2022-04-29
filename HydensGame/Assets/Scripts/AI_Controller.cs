@@ -26,8 +26,8 @@ public class AI_Controller : MonoBehaviour,I_Shootable
     public GameObject projectilePrefab;
     private GameObject gun;
     private GameObject barrel;
-    private GameObject rocket;
-    private AI_Projectile rocketScript;
+    private GameObject bullet;
+    private AI_Projectile bulletScript;
     float startTime = 1f;
     float waitTime = 0;
     internal Ray ray;
@@ -143,10 +143,10 @@ public class AI_Controller : MonoBehaviour,I_Shootable
                     
                     if (waitTime <= 0)
                     {
-                        rocket = Instantiate(projectilePrefab, barrel.transform.position, Quaternion.identity) as GameObject;
+                        bullet = Instantiate(projectilePrefab, barrel.transform.position, Quaternion.identity) as GameObject;
                         waitTime = startTime;
-                        rocketScript = rocket.GetComponent<AI_Projectile>();
-                        rocketScript.getRayLocation(ray);
+                        bulletScript = bullet.GetComponent<AI_Projectile>();
+                        bulletScript.getRayLocation(ray);
                     }
                     else
                     {
