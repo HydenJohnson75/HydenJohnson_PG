@@ -354,15 +354,6 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.name == "Teleporter")
-        {
-            this.transform.position = new Vector3(-225.35f, 0, -11.01f);
-        }
-
-        if (collision.gameObject.name == "Teleporter_2")
-        {
-            this.transform.position = new Vector3(-90.5999985f, 1.58399999f, -85.101799f);
-        }
 
         if(collision.gameObject.name == "Clovis_Symbol")
         {
