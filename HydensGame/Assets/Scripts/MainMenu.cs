@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;using UnityEngine.SceneManagement;
 
+/*  Code to navigate main menu taken from brackeys video on 02/03/2022
+    URL:https://www.youtube.com/watch?v=zc8ac_qUXQY&list=PLPV2KyIb3jR4JsOygkHOd2q0CFoslwZOZ&index=1
+ */
+
 public class MainMenu : MonoBehaviour
 {
     public AudioClip preEncounterClip;
@@ -10,6 +14,7 @@ public class MainMenu : MonoBehaviour
     public Canvas lastCanvas;
     public void Start()
     {
+        Time.timeScale = 1f;
         preEncounterSource = gameObject.AddComponent<AudioSource>();
         preEncounterSource.playOnAwake = false;
         preEncounterSource.clip = preEncounterClip;
