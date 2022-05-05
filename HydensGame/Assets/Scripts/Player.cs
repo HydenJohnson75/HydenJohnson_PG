@@ -21,12 +21,11 @@ public class Player : MonoBehaviour
     GameObject main_Cam;
     FPS_Camera my_Camera;
     focal_Point my_Focal_Point;
-    private bool is_Grounded = true;
+    //private bool is_Grounded = true;
     Vector3 last_Position;
     public List<Gun_Script> my_Guns;
     internal Gun_Script my_Gun;
     bool hasBuff;
-    bool isInteracting = false;
     public bool hasGun2;
     private NavMeshAgent navMeshAgent;
     private Rigidbody rb;
